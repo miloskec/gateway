@@ -1,3 +1,36 @@
+# Gateway Microservice
+
+## Setup Instructions
+
+1. Navigate to the gateway directory:
+    ```sh
+    cd gateway
+    ```
+2. Ensure the Docker network is created:
+    ```sh
+    docker network ls (search for sail)
+    ```
+3. Create the network if not already created:
+    ```sh
+    docker network create sail
+    ```
+4. Start the gateway service:
+    ```sh
+    docker-compose up -d
+    ```
+
+## Environment Configuration
+
+Copy the content from the `.env.example` to the `.env` file and configure the environment variables as needed.
+
+## Additional Commands
+
+To stop the service:
+```sh
+docker-compose down
+```
+ 
+  
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
