@@ -1,0 +1,40 @@
+<?php
+
+// routes/api.php
+
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProxyController;
+use App\Http\Middleware\JWTMiddleware;
+
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/verify-jwt', [AuthController::class, 'verifyJWT']);
+
+/** 
+ * TODO: Implement the following routes
+ * Route::post('/verify', [AuthController::class, 'verify']);
+ * Route::post('/password-recovery', [AuthController::class, 'passwordRecovery']);
+ * Route::post('/reset-password', [AuthController::class, 'resetPassword']);
+ * Route::post('/refresh-token', [AuthController::class, 'refresh']);
+ */
+
+Route::middleware(['jwt.auth', 'authorize:profile.show'])->group(function () {
+    Route::get('/profile', [ProxyController::class, 'handleProfile'])->name('profile.show');
+});
+//authorize.profile only allowe users with role admin.panel to access it
+Route::middleware(['jwt.auth', 'authorize:admin.panel'])->group(function () {
+    Route::get('/profile/admin', [ProxyController::class, 'handleAdminProfile'])->name('profile.admin.panel');
+});
+//authorize.profile only allowe admin or owner of profile to access it
+Route::middleware(['jwt.auth', 'profile.access'])->group(function () {
+    Route::get('/profile/{id}', [ProxyController::class, 'handleProfile'])->whereNumber('id')->name('profile.show.id');
+});
+//Proxy routes
+$services = ['profile'];
+foreach ($services as $service) {
+    Route::any("/{{$service}}/{path?}", [ProxyController::class, 'handleDynamic'])
+        ->middleware(JWTMiddleware::class)
+        ->where('path', '.*')
+        ->name($service);
+}
