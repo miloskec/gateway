@@ -6,9 +6,9 @@
     ```sh
     cd gateway
     ```
-2. Ensure the Docker network is created:
+2. Ensure the Docker network is created (search for sail):
     ```sh
-    docker network ls (search for sail)
+    docker network ls
     ```
 3. Create the network if not already created:
     ```sh
