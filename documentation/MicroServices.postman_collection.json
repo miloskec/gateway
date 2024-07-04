@@ -1,0 +1,2778 @@
+{
+	"info": {
+		"_postman_id": "3f72a473-432a-4ed4-8210-d2b2f3c049ce",
+		"name": "MicroServices",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "9220824"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"item": [
+				{
+					"name": "login admin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"// Store access_token in Global variables\r",
+									"//pm.globals.set(\"access_token\", jsonData.data.token.access_token);\r",
+									"console.log(jsonData.data.token.access_token);\r",
+									"pm.environment.set('admin_access_token', jsonData.data.token.access_token);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"miloskecman@gmail.com\",\r\n    \"password\": \"12345678erA!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"login"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Error - Authentication API down",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\":\"miloskecman@gmail.com\",\r\n    \"password\": \"12345678erA!\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8001/api/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8001",
+									"path": [
+										"api",
+										"login"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 500,\n    \"source\": \"Authentication API\",\n    \"message\": \"cURL error 6: Could not resolve host: authentication (see https://curl.haxx.se/libcurl/c/libcurl-errors.html) for http://authentication/api/login\",\n    \"error\": {\n        \"type\": \"GuzzleHttp\\\\Exception\\\\ConnectException\",\n        \"details\": {\n            \"connection\": \"Could not resolve host: authentication\"\n        }\n    }\n}"
+						},
+						{
+							"name": "Error - Wrong credentials",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\":\"miloskecman@gmail.com\",\r\n    \"password\": \"12345678erA!q\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8001/api/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8001",
+									"path": [
+										"api",
+										"login"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 401,\n    \"source\": \"Authentication API\",\n    \"message\": \"Unauthorized\",\n    \"error\": {\n        \"type\": \"Illuminate\\\\Auth\\\\AuthenticationException\",\n        \"details\": []\n    }\n}"
+						},
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\":\"miloskecman@gmail.com\",\r\n    \"password\": \"12345678erA!\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8001/api/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8001",
+									"path": [
+										"api",
+										"login"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"user\": {\n            \"id\": 2,\n            \"email\": \"example_admin@example.com\",\n            \"username\": \"admin\",\n            \"full_name\": \"Microservice Admin\"\n        },\n        \"token\": {\n            \"access_token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vYXV0aGVudGljYXRpb24vYXBpL2xvZ2luIiwiaWF0IjoxNzIwMDA3OTIzLCJleHAiOjE3MjAwNzk5MjMsIm5iZiI6MTcyMDAwNzkyMywianRpIjoienNLOGtXWkxzY0FJNUU1TyIsInN1YiI6IjIiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.plmL1E2AcmEc6y132SxBc1mpu-YXDvStkW11CLZhof4\",\n            \"expires_at\": \"2024-07-04 07:58:43\",\n            \"issued_at\": \"2024-07-03 11:58:43\"\n        }\n    },\n    \"status\": \"success\",\n    \"message\": \"User data retrieved successfully.\"\n}"
+						}
+					]
+				},
+				{
+					"name": "login user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"// Store access_token in Global variables\r",
+									"//pm.globals.set(\"access_token\", jsonData.data.token.access_token);\r",
+									"console.log(jsonData.data.token.access_token);\r",
+									"pm.environment.set('user_access_token', jsonData.data.token.access_token);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"miloskeckecman@gmail.com\",\r\n    \"password\": \"12345678erA!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"login"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Error - Authentication API down",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\":\"miloskeckecman@gmail.com\",\r\n    \"password\": \"12345678erA!\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8001/api/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8001",
+									"path": [
+										"api",
+										"login"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 500,\n    \"source\": \"Authentication API\",\n    \"message\": \"cURL error 6: Could not resolve host: authentication (see https://curl.haxx.se/libcurl/c/libcurl-errors.html) for http://authentication/api/login\",\n    \"error\": {\n        \"type\": \"GuzzleHttp\\\\Exception\\\\ConnectException\",\n        \"details\": {\n            \"connection\": \"Could not resolve host: authentication\"\n        }\n    }\n}"
+						},
+						{
+							"name": "Error - Wrong credentials",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\":\"miloskeckecman@gmail.com\",\r\n    \"password\": \"12345678erA!a\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/login",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"login"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 401,\n    \"source\": \"Authentication API\",\n    \"message\": \"Unauthorized\",\n    \"error\": {\n        \"type\": \"Illuminate\\\\Auth\\\\AuthenticationException\",\n        \"details\": []\n    }\n}"
+						},
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\":\"miloskeckecman@gmail.com\",\r\n    \"password\": \"12345678erA!\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/login",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"login"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"user\": {\n            \"id\": 1,\n            \"email\": \"example_user@example.com\",\n            \"username\": \"user\",\n            \"full_name\": \"Microservice User\"\n        },\n        \"token\": {\n            \"access_token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vYXV0aGVudGljYXRpb24vYXBpL2xvZ2luIiwiaWF0IjoxNzIwMDA4MDUzLCJleHAiOjE3MjAwODAwNTMsIm5iZiI6MTcyMDAwODA1MywianRpIjoiaThiUEFNVWVGSlNtRzljQyIsInN1YiI6IjEiLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.DmCf4Y9GtoqNCDPUBIT3TH3dEzT6_PQWdhNIA3lxlRg\",\n            \"expires_at\": \"2024-07-04 08:00:53\",\n            \"issued_at\": \"2024-07-03 12:00:53\"\n        }\n    },\n    \"status\": \"success\",\n    \"message\": \"User data retrieved successfully.\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Logout",
+			"item": [
+				{
+					"name": "logout admin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"// Store access_token in Global variables\r",
+									"//pm.globals.set(\"access_token\", jsonData.data.token.access_token);\r",
+									"console.log(jsonData.data);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/logout",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"logout"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Error - Authentication API down",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\":\"miloskecman@gmail.com\",\r\n    \"password\": \"12345678erA!\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8001/api/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8001",
+									"path": [
+										"api",
+										"login"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 500,\n    \"source\": \"Authentication API\",\n    \"message\": \"cURL error 6: Could not resolve host: authentication (see https://curl.haxx.se/libcurl/c/libcurl-errors.html) for http://authentication/api/login\",\n    \"error\": {\n        \"type\": \"GuzzleHttp\\\\Exception\\\\ConnectException\",\n        \"details\": {\n            \"connection\": \"Could not resolve host: authentication\"\n        }\n    }\n}"
+						},
+						{
+							"name": "Error - Unauthorized",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\":\"miloskecman@gmail.com\",\r\n    \"password\": \"12345678erA!q\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/login",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"login"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 401,\n    \"source\": \"Authentication API\",\n    \"message\": \"Unauthorized\",\n    \"error\": {\n        \"type\": \"Illuminate\\\\Auth\\\\AuthenticationException\",\n        \"details\": []\n    }\n}"
+						},
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\":\"miloskecman@gmail.com\",\r\n    \"password\": \"12345678erA!\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/login",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"login"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"message\": \"Successfully logged out\"\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "logout user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"// Store access_token in Global variables\r",
+									"//pm.globals.set(\"access_token\", jsonData.data.token.access_token);\r",
+									"console.log(jsonData.data);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{user_access_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/logout",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"logout"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Error - Authentication API down",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\":\"miloskecman@gmail.com\",\r\n    \"password\": \"12345678erA!\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8001/api/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8001",
+									"path": [
+										"api",
+										"login"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 500,\n    \"source\": \"Authentication API\",\n    \"message\": \"cURL error 6: Could not resolve host: authentication (see https://curl.haxx.se/libcurl/c/libcurl-errors.html) for http://authentication/api/login\",\n    \"error\": {\n        \"type\": \"GuzzleHttp\\\\Exception\\\\ConnectException\",\n        \"details\": {\n            \"connection\": \"Could not resolve host: authentication\"\n        }\n    }\n}"
+						},
+						{
+							"name": "Error - Unauthorized",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\":\"miloskecman@gmail.com\",\r\n    \"password\": \"12345678erA!q\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/login",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"login"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 401,\n    \"source\": \"Authentication API\",\n    \"message\": \"Unauthorized\",\n    \"error\": {\n        \"type\": \"Illuminate\\\\Auth\\\\AuthenticationException\",\n        \"details\": []\n    }\n}"
+						},
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\":\"miloskecman@gmail.com\",\r\n    \"password\": \"12345678erA!\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/login",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"login"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"message\": \"Successfully logged out\"\n    }\n]"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Verify Token",
+			"item": [
+				{
+					"name": "verify user token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{user_access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/verify-jwt",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"verify-jwt"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Error - Authentication API down",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\":\"miloskeckecman@gmail.com\",\r\n    \"password\": \"12345678erA!\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8001/api/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8001",
+									"path": [
+										"api",
+										"login"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 500,\n    \"source\": \"Authentication API\",\n    \"message\": \"cURL error 6: Could not resolve host: authentication (see https://curl.haxx.se/libcurl/c/libcurl-errors.html) for http://authentication/api/login\",\n    \"error\": {\n        \"type\": \"GuzzleHttp\\\\Exception\\\\ConnectException\",\n        \"details\": {\n            \"connection\": \"Could not resolve host: authentication\"\n        }\n    }\n}"
+						},
+						{
+							"name": "Error - Wrong credentials",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\":\"miloskeckecman@gmail.com\",\r\n    \"password\": \"12345678erA!a\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/login",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"login"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 401,\n    \"source\": \"Authentication API\",\n    \"message\": \"Unauthorized\",\n    \"error\": {\n        \"type\": \"Illuminate\\\\Auth\\\\AuthenticationException\",\n        \"details\": []\n    }\n}"
+						},
+						{
+							"name": "Error - Wrong token",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{user_access_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/verify-jwt",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"verify-jwt"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 500,\n    \"source\": \"Authentication API\",\n    \"message\": \"Token Signature could not be verified.\",\n    \"error\": {\n        \"type\": \"Tymon\\\\JWTAuth\\\\Exceptions\\\\TokenInvalidException\",\n        \"details\": []\n    }\n}"
+						},
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\":\"miloskeckecman@gmail.com\",\r\n    \"password\": \"12345678erA!\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/login",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"login"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"access_token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vYXV0aGVudGljYXRpb24vYXBpL3JlZnJlc2gtdG9rZW4iLCJpYXQiOjE3MjAwMTc3MTEsImV4cCI6MTcyMDE1NzI0OCwibmJmIjoxNzIwMDg1MjQ4LCJqdGkiOiJWWWVJbWhpRGhVQkNEQzA0Iiwic3ViIjoiMiIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.kb3tz8hie94JZnFq_U02tGqpDwYSjh-Ow62UvLmTJ7A\",\n    \"token_type\": \"bearer\",\n    \"expires_in\": 72000\n}"
+						}
+					]
+				},
+				{
+					"name": "verify admin token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/verify-jwt",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"verify-jwt"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Error - Authentication API down",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\":\"miloskeckecman@gmail.com\",\r\n    \"password\": \"12345678erA!\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8001/api/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8001",
+									"path": [
+										"api",
+										"login"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 500,\n    \"source\": \"Authentication API\",\n    \"message\": \"cURL error 6: Could not resolve host: authentication (see https://curl.haxx.se/libcurl/c/libcurl-errors.html) for http://authentication/api/login\",\n    \"error\": {\n        \"type\": \"GuzzleHttp\\\\Exception\\\\ConnectException\",\n        \"details\": {\n            \"connection\": \"Could not resolve host: authentication\"\n        }\n    }\n}"
+						},
+						{
+							"name": "Error - Wrong credentials",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\":\"miloskeckecman@gmail.com\",\r\n    \"password\": \"12345678erA!a\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/login",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"login"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 401,\n    \"source\": \"Authentication API\",\n    \"message\": \"Unauthorized\",\n    \"error\": {\n        \"type\": \"Illuminate\\\\Auth\\\\AuthenticationException\",\n        \"details\": []\n    }\n}"
+						},
+						{
+							"name": "Error - Wrong token",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{user_access_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/verify-jwt",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"verify-jwt"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 500,\n    \"source\": \"Authentication API\",\n    \"message\": \"Token Signature could not be verified.\",\n    \"error\": {\n        \"type\": \"Tymon\\\\JWTAuth\\\\Exceptions\\\\TokenInvalidException\",\n        \"details\": []\n    }\n}"
+						},
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\":\"miloskeckecman@gmail.com\",\r\n    \"password\": \"12345678erA!\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/login",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"login"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"access_token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vYXV0aGVudGljYXRpb24vYXBpL3JlZnJlc2gtdG9rZW4iLCJpYXQiOjE3MjAwMTc3MTEsImV4cCI6MTcyMDE1NzI0OCwibmJmIjoxNzIwMDg1MjQ4LCJqdGkiOiJWWWVJbWhpRGhVQkNEQzA0Iiwic3ViIjoiMiIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.kb3tz8hie94JZnFq_U02tGqpDwYSjh-Ow62UvLmTJ7A\",\n    \"token_type\": \"bearer\",\n    \"expires_in\": 72000\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Refresh Token",
+			"item": [
+				{
+					"name": "refresh admin token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"// Store access_token in Global variables\r",
+									"//pm.globals.set(\"access_token\", jsonData.data.token.access_token);\r",
+									"pm.environment.set('admin_access_token', jsonData.data.token.access_token);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/refresh-token",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"refresh-token"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Error - Authentication API down",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\":\"miloskeckecman@gmail.com\",\r\n    \"password\": \"12345678erA!\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8001/api/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8001",
+									"path": [
+										"api",
+										"login"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 500,\n    \"source\": \"Authentication API\",\n    \"message\": \"cURL error 6: Could not resolve host: authentication (see https://curl.haxx.se/libcurl/c/libcurl-errors.html) for http://authentication/api/login\",\n    \"error\": {\n        \"type\": \"GuzzleHttp\\\\Exception\\\\ConnectException\",\n        \"details\": {\n            \"connection\": \"Could not resolve host: authentication\"\n        }\n    }\n}"
+						},
+						{
+							"name": "Error - Wrong credentials",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\":\"miloskeckecman@gmail.com\",\r\n    \"password\": \"12345678erA!a\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/login",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"login"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 401,\n    \"source\": \"Authentication API\",\n    \"message\": \"Unauthorized\",\n    \"error\": {\n        \"type\": \"Illuminate\\\\Auth\\\\AuthenticationException\",\n        \"details\": []\n    }\n}"
+						},
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\":\"miloskeckecman@gmail.com\",\r\n    \"password\": \"12345678erA!\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/login",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"login"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"access_token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vYXV0aGVudGljYXRpb24vYXBpL3JlZnJlc2gtdG9rZW4iLCJpYXQiOjE3MjAwMTc3MTEsImV4cCI6MTcyMDE1NzI0OCwibmJmIjoxNzIwMDg1MjQ4LCJqdGkiOiJWWWVJbWhpRGhVQkNEQzA0Iiwic3ViIjoiMiIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.kb3tz8hie94JZnFq_U02tGqpDwYSjh-Ow62UvLmTJ7A\",\n    \"token_type\": \"bearer\",\n    \"expires_in\": 72000\n}"
+						}
+					]
+				},
+				{
+					"name": "refresh user token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);\r",
+									"// Store access_token in Global variables\r",
+									"//pm.globals.set(\"access_token\", jsonData.data.token.access_token);\r",
+									"pm.environment.set('user_access_token', jsonData.data.token.access_token);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{user_access_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/refresh-token",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"refresh-token"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Error - Authentication API down",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\":\"miloskeckecman@gmail.com\",\r\n    \"password\": \"12345678erA!\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8001/api/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8001",
+									"path": [
+										"api",
+										"login"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 500,\n    \"source\": \"Authentication API\",\n    \"message\": \"cURL error 6: Could not resolve host: authentication (see https://curl.haxx.se/libcurl/c/libcurl-errors.html) for http://authentication/api/login\",\n    \"error\": {\n        \"type\": \"GuzzleHttp\\\\Exception\\\\ConnectException\",\n        \"details\": {\n            \"connection\": \"Could not resolve host: authentication\"\n        }\n    }\n}"
+						},
+						{
+							"name": "Error - Wrong credentials",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\":\"miloskeckecman@gmail.com\",\r\n    \"password\": \"12345678erA!a\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/login",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"login"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 401,\n    \"source\": \"Authentication API\",\n    \"message\": \"Unauthorized\",\n    \"error\": {\n        \"type\": \"Illuminate\\\\Auth\\\\AuthenticationException\",\n        \"details\": []\n    }\n}"
+						},
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\":\"miloskeckecman@gmail.com\",\r\n    \"password\": \"12345678erA!\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/login",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"login"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"access_token\": \"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vYXV0aGVudGljYXRpb24vYXBpL3JlZnJlc2gtdG9rZW4iLCJpYXQiOjE3MjAwMTc3MTEsImV4cCI6MTcyMDE1NzI0OCwibmJmIjoxNzIwMDg1MjQ4LCJqdGkiOiJWWWVJbWhpRGhVQkNEQzA0Iiwic3ViIjoiMiIsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.kb3tz8hie94JZnFq_U02tGqpDwYSjh-Ow62UvLmTJ7A\",\n    \"token_type\": \"bearer\",\n    \"expires_in\": 72000\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Profile",
+			"item": [
+				{
+					"name": "profile - admin",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/profile",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"profile"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Error - Expired token",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer "
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8001/api/profile",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8001",
+									"path": [
+										"api",
+										"profile"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 500,\n    \"source\": \"Authentication API\",\n    \"message\": \"Token has expired\",\n    \"error\": {\n        \"type\": \"Tymon\\\\JWTAuth\\\\Exceptions\\\\TokenExpiredException\",\n        \"details\": []\n    }\n}"
+						},
+						{
+							"name": "Error - Unauthorized",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{admin_access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/profile",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"profile"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 401,\n    \"source\": \"Authentication API\",\n    \"message\": \"Unauthorized\",\n    \"error\": {\n        \"type\": \"Illuminate\\\\Auth\\\\AuthenticationException\",\n        \"details\": []\n    }\n}"
+						},
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{admin_access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/profile",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"profile"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"id\": 2,\n        \"email\": \"example_admin@example.com\",\n        \"username\": \"admin\",\n        \"full_name\": \"Microservice Admin\",\n        \"address\": \"97460 Mathias Throughway\\nSchusterport, HI 56944-2155\",\n        \"phone_number\": \"631-855-0221\",\n        \"birthdate\": \"2004-10-08\",\n        \"profile_picture\": null,\n        \"bio\": \"Et mollitia aspernatur porro quis aliquam nisi.\",\n        \"created_at\": \"2024-07-03T14:16:00.000000Z\",\n        \"updated_at\": \"2024-07-03T14:16:00.000000Z\",\n        \"requested_from_user\": {\n            \"id\": 2,\n            \"email\": \"example_admin@example.com\",\n            \"username\": \"admin\",\n            \"full_name\": \"Microservice Admin\",\n            \"created_at\": \"2024-07-03T14:16:00.000000Z\",\n            \"updated_at\": \"2024-07-03T14:16:00.000000Z\"\n        }\n    },\n    \"status\": \"success\",\n    \"message\": \"Profile data retrieved successfully.\"\n}"
+						}
+					]
+				},
+				{
+					"name": "profile - user",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{user_access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/profile",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"profile"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Error - Expired token",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer "
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8001/api/profile",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8001",
+									"path": [
+										"api",
+										"profile"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 500,\n    \"source\": \"Authentication API\",\n    \"message\": \"Token has expired\",\n    \"error\": {\n        \"type\": \"Tymon\\\\JWTAuth\\\\Exceptions\\\\TokenExpiredException\",\n        \"details\": []\n    }\n}"
+						},
+						{
+							"name": "Error - Unauthorized",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{admin_access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/profile",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"profile"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 401,\n    \"source\": \"Authentication API\",\n    \"message\": \"Unauthorized\",\n    \"error\": {\n        \"type\": \"Illuminate\\\\Auth\\\\AuthenticationException\",\n        \"details\": []\n    }\n}"
+						},
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{admin_access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/profile",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"profile"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"id\": 1,\n        \"email\": \"example_user@example.com\",\n        \"username\": \"user\",\n        \"full_name\": \"Microservice User\",\n        \"address\": \"743 Ewald Ridge Apt. 074\\nCleoburgh, AR 31661-8486\",\n        \"phone_number\": \"1-260-748-9969\",\n        \"birthdate\": \"1994-01-17\",\n        \"profile_picture\": null,\n        \"bio\": \"Quia laborum aut qui ut dolores dolorem.\",\n        \"created_at\": \"2024-07-03T14:15:42.000000Z\",\n        \"updated_at\": \"2024-07-03T14:15:42.000000Z\",\n        \"requested_from_user\": {\n            \"id\": 1,\n            \"email\": \"example_user@example.com\",\n            \"username\": \"user\",\n            \"full_name\": \"Microservice User\",\n            \"created_at\": \"2024-07-03T14:15:38.000000Z\",\n            \"updated_at\": \"2024-07-03T14:15:38.000000Z\"\n        }\n    },\n    \"status\": \"success\",\n    \"message\": \"Profile data retrieved successfully.\"\n}"
+						}
+					]
+				},
+				{
+					"name": "profile - admin panel AS admin",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/profile/admin",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"profile",
+								"admin"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Error - Unauthorized",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{admin_access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/profile/admin",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"profile",
+										"admin"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 401,\n    \"source\": \"Authentication API\",\n    \"message\": \"Unauthorized\",\n    \"error\": {\n        \"type\": \"Illuminate\\\\Auth\\\\AuthenticationException\",\n        \"details\": []\n    }\n}"
+						},
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer "
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8001/api/profile/admin",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8001",
+									"path": [
+										"api",
+										"profile",
+										"admin"
+									]
+								}
+							},
+							"_postman_previewlanguage": "html",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "text/html",
+									"name": "Content-Type",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "You can access this!"
+						}
+					]
+				},
+				{
+					"name": "profile - admin panel AS user",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{user_access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/profile/admin",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"profile",
+								"admin"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Error - Unauthorized",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{admin_access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/profile/admin",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"profile",
+										"admin"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 401,\n    \"source\": \"Authentication API\",\n    \"message\": \"Unauthorized\",\n    \"error\": {\n        \"type\": \"Illuminate\\\\Auth\\\\AuthenticationException\",\n        \"details\": []\n    }\n}"
+						},
+						{
+							"name": "Error - Forbidden",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer "
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8001/api/profile/admin",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8001",
+									"path": [
+										"api",
+										"profile",
+										"admin"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 403,\n    \"source\": \"Gateway API\",\n    \"message\": \"Forbidden\",\n    \"error\": {\n        \"type\": \"Illuminate\\\\Auth\\\\Access\\\\AuthorizationException\",\n        \"details\": []\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "profile 1 AS admin",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/profile/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"profile",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Error - Unauthorized",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{admin_access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/profile/1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"profile",
+										"1"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 401,\n    \"source\": \"Authentication API\",\n    \"message\": \"Unauthorized\",\n    \"error\": {\n        \"type\": \"Illuminate\\\\Auth\\\\AuthenticationException\",\n        \"details\": []\n    }\n}"
+						},
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer "
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8001/api/profile/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8001",
+									"path": [
+										"api",
+										"profile",
+										"1"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"id\": 1,\n        \"email\": \"example_user@example.com\",\n        \"username\": \"user\",\n        \"full_name\": \"Microservice User\",\n        \"address\": \"743 Ewald Ridge Apt. 074\\nCleoburgh, AR 31661-8486\",\n        \"phone_number\": \"1-260-748-9969\",\n        \"birthdate\": \"1994-01-17\",\n        \"profile_picture\": null,\n        \"bio\": \"Quia laborum aut qui ut dolores dolorem.\",\n        \"created_at\": \"2024-07-03T14:15:42.000000Z\",\n        \"updated_at\": \"2024-07-03T14:15:42.000000Z\",\n        \"requested_from_user\": {\n            \"id\": 2,\n            \"email\": \"example_admin@example.com\",\n            \"username\": \"admin\",\n            \"full_name\": \"Microservice Admin\",\n            \"created_at\": \"2024-07-03T14:16:00.000000Z\",\n            \"updated_at\": \"2024-07-03T14:16:00.000000Z\"\n        }\n    },\n    \"status\": \"success\",\n    \"message\": \"Profile data retrieved successfully.\"\n}"
+						}
+					]
+				},
+				{
+					"name": "profile 2 AS admin",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{admin_access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/profile/2",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"profile",
+								"2"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Error - Unauthorized",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{admin_access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/profile/2",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"profile",
+										"2"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 401,\n    \"source\": \"Authentication API\",\n    \"message\": \"Unauthorized\",\n    \"error\": {\n        \"type\": \"Illuminate\\\\Auth\\\\AuthenticationException\",\n        \"details\": []\n    }\n}"
+						},
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer "
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8001/api/profile/2",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8001",
+									"path": [
+										"api",
+										"profile",
+										"2"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"id\": 2,\n        \"email\": \"example_admin@example.com\",\n        \"username\": \"admin\",\n        \"full_name\": \"Microservice Admin\",\n        \"address\": \"97460 Mathias Throughway\\nSchusterport, HI 56944-2155\",\n        \"phone_number\": \"631-855-0221\",\n        \"birthdate\": \"2004-10-08\",\n        \"profile_picture\": null,\n        \"bio\": \"Et mollitia aspernatur porro quis aliquam nisi.\",\n        \"created_at\": \"2024-07-03T14:16:00.000000Z\",\n        \"updated_at\": \"2024-07-03T14:16:00.000000Z\",\n        \"requested_from_user\": {\n            \"id\": 2,\n            \"email\": \"example_admin@example.com\",\n            \"username\": \"admin\",\n            \"full_name\": \"Microservice Admin\",\n            \"created_at\": \"2024-07-03T14:16:00.000000Z\",\n            \"updated_at\": \"2024-07-03T14:16:00.000000Z\"\n        }\n    },\n    \"status\": \"success\",\n    \"message\": \"Profile data retrieved successfully.\"\n}"
+						}
+					]
+				},
+				{
+					"name": "profile 1 AS user",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{user_access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/profile/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"profile",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Error - Unauthorized",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{admin_access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/profile/1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"profile",
+										"1"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 401,\n    \"source\": \"Authentication API\",\n    \"message\": \"Unauthorized\",\n    \"error\": {\n        \"type\": \"Illuminate\\\\Auth\\\\AuthenticationException\",\n        \"details\": []\n    }\n}"
+						},
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer "
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8001/api/profile/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8001",
+									"path": [
+										"api",
+										"profile",
+										"1"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"id\": 1,\n        \"email\": \"example_user@example.com\",\n        \"username\": \"user\",\n        \"full_name\": \"Microservice User\",\n        \"address\": \"743 Ewald Ridge Apt. 074\\nCleoburgh, AR 31661-8486\",\n        \"phone_number\": \"1-260-748-9969\",\n        \"birthdate\": \"1994-01-17\",\n        \"profile_picture\": null,\n        \"bio\": \"Quia laborum aut qui ut dolores dolorem.\",\n        \"created_at\": \"2024-07-03T14:15:42.000000Z\",\n        \"updated_at\": \"2024-07-03T14:15:42.000000Z\",\n        \"requested_from_user\": {\n            \"id\": 1,\n            \"email\": \"example_user@example.com\",\n            \"username\": \"user\",\n            \"full_name\": \"Microservice User\",\n            \"created_at\": \"2024-07-03T14:15:38.000000Z\",\n            \"updated_at\": \"2024-07-03T14:15:38.000000Z\"\n        }\n    },\n    \"status\": \"success\",\n    \"message\": \"Profile data retrieved successfully.\"\n}"
+						}
+					]
+				},
+				{
+					"name": "profile 2 AS user",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{user_access_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/profile/2",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"profile",
+								"2"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Error - Unauthorized",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer {{admin_access_token}}"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/api/profile/2",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"profile",
+										"2"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 401,\n    \"source\": \"Authentication API\",\n    \"message\": \"Unauthorized\",\n    \"error\": {\n        \"type\": \"Illuminate\\\\Auth\\\\AuthenticationException\",\n        \"details\": []\n    }\n}"
+						},
+						{
+							"name": "Error - Forbidden",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer "
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8001/api/profile/2",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8001",
+									"path": [
+										"api",
+										"profile",
+										"2"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 403,\n    \"source\": \"Gateway API\",\n    \"message\": \"Forbidden\",\n    \"error\": {\n        \"type\": \"Illuminate\\\\Auth\\\\Access\\\\AuthorizationException\",\n        \"details\": []\n    }\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Register",
+			"item": [
+				{
+					"name": "register admin",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\"admin\",\r\n    \"full_name\":\"Microservice Admin\",\r\n    \"email\":\"miloskecman@gmail.com\",\r\n    \"password\": \"12345678erA!\",\r\n    \"password_confirmation\": \"12345678erA!\",\r\n    \"is_admin\" : true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/register",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"register"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Error - Authentication API down",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\":\"admin\",\r\n    \"full_name\":\"Microservice Admin\",\r\n    \"email\":\"miloskecman@gmail.com\",\r\n    \"password\": \"12345678erA!\",\r\n    \"password_confirmation\": \"12345678erA!\",\r\n    \"is_admin\" : true\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8001/api/register",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8001",
+									"path": [
+										"api",
+										"register"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 500,\n    \"source\": \"Authentication API\",\n    \"message\": \"cURL error 6: Could not resolve host: authentication (see https://curl.haxx.se/libcurl/c/libcurl-errors.html) for http://authentication/api/register\",\n    \"error\": {\n        \"type\": \"GuzzleHttp\\\\Exception\\\\ConnectException\",\n        \"details\": {\n            \"connection\": \"Could not resolve host: authentication\"\n        }\n    }\n}"
+						},
+						{
+							"name": "Error - Email taken",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\":\"user\",\r\n    \"full_name\":\"Microservice User\",\r\n    \"email\":\"miloskeckecman@gmail.com\",\r\n    \"password\": \"12345678erA!\",\r\n    \"password_confirmation\": \"12345678erA!\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/register",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"register"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 422,\n    \"source\": \"Authentication API\",\n    \"message\": \"The email has already been taken.\",\n    \"error\": {\n        \"type\": \"Illuminate\\\\Validation\\\\ValidationException\",\n        \"details\": {\n            \"email\": [\n                \"The email has already been taken.\"\n            ]\n        }\n    }\n}"
+						},
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\":\"admin\",\r\n    \"full_name\":\"Microservice Admin\",\r\n    \"email\":\"miloskecman@gmail.com\",\r\n    \"password\": \"12345678erA!\",\r\n    \"password_confirmation\": \"12345678erA!\",\r\n    \"is_admin\" : true\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/register",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"register"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"id\": 2,\n        \"email\": \"example_admin@example.com\",\n        \"username\": \"admin\",\n        \"full_name\": \"Microservice Admin\",\n        \"created_at\": \"2024-07-03 11:37:34\",\n        \"updated_at\": \"2024-07-03 11:37:34\"\n    },\n    \"status\": \"success\",\n    \"message\": \"User data retrieved successfully.\"\n}"
+						}
+					]
+				},
+				{
+					"name": "register user",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\"user\",\r\n    \"full_name\":\"Microservice User\",\r\n    \"email\":\"miloskeckecman@gmail.com\",\r\n    \"password\": \"12345678erA!\",\r\n    \"password_confirmation\": \"12345678erA!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/register",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"register"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Error - Authentication API down",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\":\"user\",\r\n    \"full_name\":\"Microservice User\",\r\n    \"email\":\"miloskeckecman@gmail.com\",\r\n    \"password\": \"12345678erA!\",\r\n    \"password_confirmation\": \"12345678erA!\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8001/api/register",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8001",
+									"path": [
+										"api",
+										"register"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 500,\n    \"source\": \"Authentication API\",\n    \"message\": \"cURL error 6: Could not resolve host: authentication (see https://curl.haxx.se/libcurl/c/libcurl-errors.html) for http://authentication/api/register\",\n    \"error\": {\n        \"type\": \"GuzzleHttp\\\\Exception\\\\ConnectException\",\n        \"details\": {\n            \"connection\": \"Could not resolve host: authentication\"\n        }\n    }\n}"
+						},
+						{
+							"name": "Error - Email taken",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\":\"user\",\r\n    \"full_name\":\"Microservice User\",\r\n    \"email\":\"miloskeckecman@gmail.com\",\r\n    \"password\": \"12345678erA!\",\r\n    \"password_confirmation\": \"12345678erA!\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/register",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"register"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status\": 422,\n    \"source\": \"Authentication API\",\n    \"message\": \"The email has already been taken.\",\n    \"error\": {\n        \"type\": \"Illuminate\\\\Validation\\\\ValidationException\",\n        \"details\": {\n            \"email\": [\n                \"The email has already been taken.\"\n            ]\n        }\n    }\n}"
+						},
+						{
+							"name": "Success",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\":\"user\",\r\n    \"full_name\":\"Microservice User\",\r\n    \"email\":\"miloskeckecman@gmail.com\",\r\n    \"password\": \"12345678erA!\",\r\n    \"password_confirmation\": \"12345678erA!\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/api/register",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"api",
+										"register"
+									]
+								}
+							},
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": "",
+									"type": "text"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"data\": {\n        \"id\": 1,\n        \"email\": \"example_user@example.com\",\n        \"username\": \"user\",\n        \"full_name\": \"Microservice User\",\n        \"created_at\": \"2024-07-03 11:36:46\",\n        \"updated_at\": \"2024-07-03 11:36:46\"\n    },\n    \"status\": \"success\",\n    \"message\": \"User data retrieved successfully.\"\n}"
+						}
+					]
+				}
+			]
+		}
+	]
+}
