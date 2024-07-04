@@ -10,13 +10,13 @@ use App\Http\Middleware\JWTMiddleware;
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/verify-jwt', [AuthController::class, 'verifyJWT']);
-
+Route::post('/refresh-token', [AuthController::class, 'refresh']);
+Route::post('/logout', [AuthController::class, 'logout']);
 /** 
  * TODO: Implement the following routes
  * Route::post('/verify', [AuthController::class, 'verify']);
  * Route::post('/password-recovery', [AuthController::class, 'passwordRecovery']);
  * Route::post('/reset-password', [AuthController::class, 'resetPassword']);
- * Route::post('/refresh-token', [AuthController::class, 'refresh']);
  */
 
 Route::middleware(['jwt.auth', 'authorize:profile.show'])->group(function () {

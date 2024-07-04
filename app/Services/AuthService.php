@@ -27,6 +27,13 @@ class AuthService
         ]);
     }
 
+    public function logout($token)
+    {
+        return $this->client->post("{$this->authServiceUrl}/logout", [
+            'json' => ['token' => $token]
+        ]);
+    }
+
     public function verify($token)
     {
         return $this->client->post("{$this->authServiceUrl}/verify", [
