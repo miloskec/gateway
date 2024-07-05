@@ -52,7 +52,7 @@ class AuthController extends Controller
 
     public function resetPassword(PasswordResetRequest $request)
     {
-        return $this->authService->resetPassword($request->bearerToken(), $request->password);
+        return $this->authService->resetPassword($request->bearerToken(), $request->password, $request->current_password);
     }
 
     public function refresh(Request $request)

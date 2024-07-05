@@ -48,10 +48,10 @@ class AuthService
         ]);
     }
 
-    public function resetPassword($token, $newPassword)
+    public function resetPassword($token, $newPassword, $currentPassword)
     {
         return $this->client->post("{$this->authServiceUrl}/reset-password", [
-            'json' => ['token' => $token, 'new_password' => $newPassword]
+            'json' => ['token' => $token, 'password' => $newPassword, 'current_password' => $currentPassword]
         ]);
     }
 

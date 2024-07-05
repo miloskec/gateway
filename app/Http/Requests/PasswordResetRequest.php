@@ -23,7 +23,15 @@ class PasswordResetRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'token' => 'required|email',
+            'current_password' => [
+                'required',
+                'string',
+                'min:8',            // Must be at least 8 characters
+                'regex:/[a-z]/',    // Must contain at least one lowercase letter
+                'regex:/[A-Z]/',    // Must contain at least one uppercase letter
+                'regex:/[0-9]/',    // Must contain at least one digit
+                'regex:/[@$!%*#?&]/' // Must contain a special character
+            ],
             'password' => [
                 'required',
                 'string',
