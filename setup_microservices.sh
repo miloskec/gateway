@@ -85,6 +85,8 @@ while ! docker-compose ps | grep -q 'healthy'; do
 done
 echo "Services in gateway are healthy"
 
+$SAIL_PATH artisan migrate
+
 # Step 3: Get into kafka folder
 docker_compose_up "kafka"
 

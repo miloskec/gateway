@@ -48,6 +48,13 @@ class AuthService
         ]);
     }
 
+    public function resetPasswordWithToken($email, $resetToken, $password)
+    {
+        return $this->client->post("{$this->authServiceUrl}/reset-password-token", [
+            'json' => ['email' => $email, 'reset_token' => $resetToken, 'password' => $password]
+        ]);
+    }
+
     public function resetPassword($token, $newPassword, $currentPassword)
     {
         return $this->client->post("{$this->authServiceUrl}/reset-password", [

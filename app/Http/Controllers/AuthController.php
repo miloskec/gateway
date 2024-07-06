@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PasswordRecoveryRequest;
 use App\Http\Requests\PasswordResetRequest;
+use App\Http\Requests\PasswordResetWithTokenRequest;
 use App\Http\Requests\UserLoginRequest;
 use App\Http\Requests\UserRegisterRequest;
 use App\Http\Requests\VerifyTokenRequest;
@@ -48,6 +49,11 @@ class AuthController extends Controller
     public function passwordRecovery(PasswordRecoveryRequest $request)
     {
         return $this->authService->passwordRecovery($request->email);
+    }
+
+    public function resetPasswordWithToken(PasswordResetWithTokenRequest $request)
+    {
+        return $this->authService->resetPasswordWithToken($request->email, $request->reset_token, $request->password);
     }
 
     public function resetPassword(PasswordResetRequest $request)

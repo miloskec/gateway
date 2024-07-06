@@ -12,12 +12,11 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/verify-jwt', [AuthController::class, 'verifyJWT']);
 Route::post('/refresh-token', [AuthController::class, 'refresh']);
 Route::post('/logout', [AuthController::class, 'logout']);
-
+Route::post('/password-recovery', [AuthController::class, 'passwordRecovery']);
+Route::post('/reset-password-token', [AuthController::class, 'resetPasswordWithToken']);
 /** 
  * TODO: Implement the following routes
  * Route::post('/verify', [AuthController::class, 'verify']);
- * Route::post('/password-recovery', [AuthController::class, 'passwordRecovery']);
- * Route::post('/reset-password', [AuthController::class, 'resetPassword']);
  */
 
 Route::middleware(['jwt.auth', 'authorize:profile.show'])->group(function () {
