@@ -27,6 +27,13 @@ class AuthService
         ]);
     }
 
+    public function logout($token)
+    {
+        return $this->client->post("{$this->authServiceUrl}/logout", [
+            'json' => ['token' => $token]
+        ]);
+    }
+
     public function verify($token)
     {
         return $this->client->post("{$this->authServiceUrl}/verify", [
@@ -41,10 +48,17 @@ class AuthService
         ]);
     }
 
-    public function resetPassword($token, $newPassword)
+    public function resetPasswordWithToken($email, $resetToken, $password)
+    {
+        return $this->client->post("{$this->authServiceUrl}/reset-password-token", [
+            'json' => ['email' => $email, 'reset_token' => $resetToken, 'password' => $password]
+        ]);
+    }
+
+    public function resetPassword($token, $newPassword, $currentPassword)
     {
         return $this->client->post("{$this->authServiceUrl}/reset-password", [
-            'json' => ['token' => $token, 'new_password' => $newPassword]
+            'json' => ['token' => $token, 'password' => $newPassword, 'current_password' => $currentPassword]
         ]);
     }
 
