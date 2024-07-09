@@ -51,9 +51,9 @@ class GuzzleServiceProvider extends ServiceProvider
         $gatewayStack->push(
             Middleware::mapResponse(function (ResponseInterface $response) use ($channelName) {
                 // Log the response details
-                Log::channel($channelName)->info('Service response: ' . $response?->getStatusCode(), [
-                    'headers' => $response?->getHeaders(),
-                    'body' => $response?->getBody()
+                Log::channel($channelName)->info('Service response: ' . $response->getStatusCode(), [
+                    'headers' => $response->getHeaders(),
+                    'body' => $response->getBody()
                 ]);
                 return $response;
             })

@@ -1,0 +1,14 @@
+includes:
+    - ./vendor/nunomaduro/larastan/extension.neon
+ 
+parameters:
+    paths:
+        - app/
+ 
+    # Level 9 is the highest level
+    level: 5
+    # Setting this to false means PHPStan will not fully trust the types defined in PHPDoc comments and will perform more thorough analysis based on actual code.
+    treatPhpDocTypesAsCertain: false
+    # Allow dynamic properties for models
+    ignoreErrors:
+        - '#Access to an undefined property App\\Models\\[a-zA-Z0-9::a-zA-Z]#'

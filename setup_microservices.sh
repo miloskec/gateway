@@ -21,16 +21,13 @@ docker_compose_up() {
   echo "Starting docker-compose in $folder"
   docker-compose up -d
 
-  if [ "$folder" != "kafka" ]; then
-    # Wait for services to be healthy
-    echo "Waiting for services in $folder to be healthy..."
-    while ! docker-compose ps | grep -q 'healthy'; do
-      sleep 5
-    done
-    echo "Services in $folder are healthy"
-  else
-    echo "Skipping health check for $folder"
-  fi
+  # Wait for services to be healthy
+  echo "Waiting for services in $folder to be healthy..."
+  while ! docker-compose ps | grep -q 'healthy'; do
+    sleep 5
+  done
+  echo "Services in $folder are healthy"
+  
   cd -  # Navigate back to the original directory
 }
 

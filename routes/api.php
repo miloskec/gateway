@@ -2,10 +2,10 @@
 
 // routes/api.php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProxyController;
 use App\Http\Middleware\JWTMiddleware;
+use Illuminate\Support\Facades\Route;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -14,11 +14,10 @@ Route::post('/refresh-token', [AuthController::class, 'refresh']);
 Route::post('/logout', [AuthController::class, 'logout']);
 Route::post('/password-recovery', [AuthController::class, 'passwordRecovery']);
 Route::post('/reset-password-token', [AuthController::class, 'resetPasswordWithToken']);
-/** 
+/**
  * TODO: Implement the following routes
  * Route::post('/verify', [AuthController::class, 'verify']);
  */
-
 Route::middleware(['jwt.auth', 'authorize:profile.show'])->group(function () {
     Route::get('/profile', [ProxyController::class, 'handleProfile'])->name('profile.show');
 });
