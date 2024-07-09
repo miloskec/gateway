@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Http\Requests\PasswordRecoveryRequest;
 use App\Http\Requests\PasswordResetRequest;
 use App\Http\Requests\PasswordResetWithTokenRequest;

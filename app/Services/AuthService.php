@@ -16,63 +16,63 @@ class AuthService
     public function register($data)
     {
         return $this->client->post("{$this->authServiceUrl}/register", [
-            'json' => $data
+            'json' => $data,
         ]);
     }
 
     public function login($data)
     {
         return $this->client->post("{$this->authServiceUrl}/login", [
-            'json' => $data
+            'json' => $data,
         ]);
     }
 
     public function logout($token)
     {
         return $this->client->post("{$this->authServiceUrl}/logout", [
-            'json' => ['token' => $token]
+            'json' => ['token' => $token],
         ]);
     }
 
     public function verify($token)
     {
         return $this->client->post("{$this->authServiceUrl}/verify", [
-            'json' => ['token' => $token]
+            'json' => ['token' => $token],
         ]);
     }
 
     public function passwordRecovery($email)
     {
         return $this->client->post("{$this->authServiceUrl}/password-recovery", [
-            'json' => ['email' => $email]
+            'json' => ['email' => $email],
         ]);
     }
 
     public function resetPasswordWithToken($email, $resetToken, $password)
     {
         return $this->client->post("{$this->authServiceUrl}/reset-password-token", [
-            'json' => ['email' => $email, 'reset_token' => $resetToken, 'password' => $password]
+            'json' => ['email' => $email, 'reset_token' => $resetToken, 'password' => $password],
         ]);
     }
 
     public function resetPassword($token, $newPassword, $currentPassword)
     {
         return $this->client->post("{$this->authServiceUrl}/reset-password", [
-            'json' => ['token' => $token, 'password' => $newPassword, 'current_password' => $currentPassword]
+            'json' => ['token' => $token, 'password' => $newPassword, 'current_password' => $currentPassword],
         ]);
     }
 
     public function verifyJWT($token)
     {
         return $this->client->post("{$this->authServiceUrl}/verify-jwt", [
-            'json' => ['token' => $token]
+            'json' => ['token' => $token],
         ]);
     }
 
     public function refreshJWT($token)
     {
         return $this->client->post("{$this->authServiceUrl}/refresh-token", [
-            'json' => ['token' => $token]
+            'json' => ['token' => $token],
         ]);
     }
 }

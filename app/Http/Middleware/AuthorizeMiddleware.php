@@ -6,15 +6,12 @@ use App\Services\AutzService;
 use Closure;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Http;
 use Symfony\Component\HttpFoundation\Response;
 
 class AuthorizeMiddleware
 {
-    public function __construct(protected readonly AutzService $autzService)
-    {
-    }
+    public function __construct(protected readonly AutzService $autzService) {}
+
     /**
      * Handle an incoming request.
      *
@@ -28,11 +25,11 @@ class AuthorizeMiddleware
         //$cacheKey = "permissions_{$username}_{$email}";
         $response = $this->autzService->checkPermissions([
             'username' => $username,
-            'email' => $email
+            'email' => $email,
         ]);
 
-        $permissionsData =json_decode($response->getBody(), true);
-        
+        $permissionsData = json_decode($response->getBody(), true);
+
         if (
             in_array($requiredPermission, array_column($permissionsData['all_permissions'], 'name')) ||
             in_array('admin', $permissionsData['roles'])
@@ -40,6 +37,6 @@ class AuthorizeMiddleware
             return $next($request);
         }
 
-        throw new AuthorizationException('Forbidden', 403);
+        throw new AuthorizationException('Forbidden', Response::HTTP_FORBIDDEN);
     }
 }
