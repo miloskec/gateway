@@ -11,4 +11,4 @@ parameters:
     treatPhpDocTypesAsCertain: false
     # Allow dynamic properties for models
     ignoreErrors:
-        - '#Access to an undefined property App\\Models\\[a-zA-Z0-9::a-zA-Z]#'
+#        - '#Access to an undefined property App\\Models\\[a-zA-Z0-9::a-zA-Z]#'
