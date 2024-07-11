@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Http\Middleware\AttachUserMiddleware;
 use App\Traits\FilterGuzzleStackLogs;
 use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
@@ -22,6 +23,7 @@ class GuzzleServiceProvider extends ServiceProvider
     {
         $this->app->singleton(Client::class, function ($app) {
             $stack = $this->getStack('gateway');
+            $stack->push(AttachUserMiddleware::handle());
 
             return new Client([
                 'handler' => $stack,
