@@ -17,6 +17,7 @@ services:
             timeout: 10s
             retries: 3
         environment:
+            TZ: ${TZ}
             WWWUSER: '${WWWUSER}'
             LARAVEL_SAIL: 1
             XDEBUG_MODE: '${SAIL_XDEBUG_MODE:-off}'
@@ -33,6 +34,7 @@ services:
         ports:
             - '${FORWARD_DB_PORT:-3306}:3306'
         environment:
+            TZ: ${TZ}
             MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
             MYSQL_ROOT_HOST: '%'
             MYSQL_DATABASE: '${DB_DATABASE}'
@@ -47,6 +49,14 @@ services:
         volumes:
             - 'sail-mysql:/var/lib/mysql'
             - './vendor/laravel/sail/database/mysql/create-testing-database.sh:/docker-entrypoint-initdb.d/10-create-testing-database.sh'
+        networks:
+            - sail
+    memcached:
+        image: memcached:alpine
+        ports:
+            - '${MEMCACHED_PORT:-11211}:11211'
+        environment:
+            TZ: ${TZ}
         networks:
             - sail
 networks:

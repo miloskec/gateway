@@ -22,7 +22,6 @@ class AuthorizeMiddleware
         $username = $request->user()->username;
         $email = $request->user()->email;
 
-        //$cacheKey = "permissions_{$username}_{$email}";
         $response = $this->autzService->checkPermissions([
             'username' => $username,
             'email' => $email,

@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Cache;
 
 class AuthService
 {
@@ -29,9 +30,19 @@ class AuthService
 
     public function logout($token)
     {
-        return $this->client->post("{$this->authServiceUrl}/logout", [
+        $cacheKey = generateJwtUserKey($token);
+
+        $response = $this->client->post("{$this->authServiceUrl}/logout", [
             'json' => ['token' => $token],
         ]);
+
+        $responseDecoded = json_decode($response->getBody(), true);
+
+        if ($responseDecoded['message'] === 'Successfully logged out') {
+            Cache::forget($cacheKey);
+        }
+
+        return $response;
     }
 
     public function verify($token)
@@ -71,6 +82,9 @@ class AuthService
 
     public function refreshJWT($token)
     {
+        $cacheKey = generateJwtUserKey($token);
+        Cache::forget($cacheKey);
+
         return $this->client->post("{$this->authServiceUrl}/refresh-token", [
             'json' => ['token' => $token],
         ]);
