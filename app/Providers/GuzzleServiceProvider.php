@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\Services\GuzzleMiddleware;
 use App\Traits\FilterGuzzleStackLogs;
 use GuzzleHttp\Client;
 use GuzzleHttp\HandlerStack;
@@ -15,6 +14,7 @@ use Psr\Http\Message\ResponseInterface;
 class GuzzleServiceProvider extends ServiceProvider
 {
     use FilterGuzzleStackLogs;
+
     /**
      * Register services.
      */
@@ -22,6 +22,7 @@ class GuzzleServiceProvider extends ServiceProvider
     {
         $this->app->singleton(Client::class, function ($app) {
             $stack = $this->getStack('gateway');
+
             return new Client([
                 'handler' => $stack,
                 'headers' => [
@@ -33,7 +34,7 @@ class GuzzleServiceProvider extends ServiceProvider
 
     private function getStack($channelName)
     {
-        $sensitiveKeys = array('username', 'password', 'grant_type', 'refresh_token', 'api_key', 'authorization', 'Authorization', 'x-api-key', 'x-api-secret', 'x-api-version');
+        $sensitiveKeys = ['username', 'password', 'grant_type', 'refresh_token', 'api_key', 'authorization', 'Authorization', 'x-api-key', 'x-api-secret', 'x-api-version'];
         $gatewayStack = HandlerStack::create();
         $gatewayStack->push(
             Middleware::mapRequest(function (RequestInterface $request) use ($channelName, $sensitiveKeys) {
@@ -45,21 +46,25 @@ class GuzzleServiceProvider extends ServiceProvider
                 $recordings['headers'] = $this->filterSensitiveHeaders($request->getHeaders(), $sensitiveKeys);
                 // Log the request details
                 Log::channel($channelName)->info('Gateway request: ', $recordings);
+
                 return $request;
             })
         );
         $gatewayStack->push(
             Middleware::mapResponse(function (ResponseInterface $response) use ($channelName) {
                 // Log the response details
-                Log::channel($channelName)->info('Service response: ' . $response->getStatusCode(), [
+                Log::channel($channelName)->info('Service response: '.$response->getStatusCode(), [
                     'headers' => $response->getHeaders(),
-                    'body' => $response->getBody()
+                    'body' => $response->getBody(),
                 ]);
+
                 return $response;
             })
         );
+
         return $gatewayStack;
     }
+
     /**
      * Bootstrap services.
      */
