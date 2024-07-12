@@ -10,10 +10,12 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class ProxyController extends Controller
 {
     protected $profileServiceUrl;
+    protected $authorizationServiceUrl;
 
     public function __construct(private readonly Client $client)
     {
         $this->profileServiceUrl = config('services.micro-services.profile'); // URL of the User Profile Service
+        $this->authorizationServiceUrl = config('services.micro-services.authorization'); // URL of the User Authentication Service
     }
 
     protected function prepareRequest(Request $request, $url, $path = null): ResponseInterface
@@ -67,6 +69,7 @@ class ProxyController extends Controller
         // Define your service URLs here
         $services = [
             'profile' => $this->profileServiceUrl,
+            'authorization' => $this->authorizationServiceUrl,
             // Add more services as needed
         ];
 
