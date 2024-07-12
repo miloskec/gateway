@@ -23,7 +23,6 @@ class GuzzleServiceProvider extends ServiceProvider
     {
         $this->app->singleton(Client::class, function ($app) {
             $stack = $this->getStack('gateway');
-            $stack->push(AttachUserMiddleware::handle());
 
             return new Client([
                 'handler' => $stack,
@@ -38,6 +37,7 @@ class GuzzleServiceProvider extends ServiceProvider
     {
         $sensitiveKeys = ['username', 'password', 'grant_type', 'refresh_token', 'api_key', 'authorization', 'Authorization', 'x-api-key', 'x-api-secret', 'x-api-version'];
         $gatewayStack = HandlerStack::create();
+        $gatewayStack->push(AttachUserMiddleware::handle());
         $gatewayStack->push(
             Middleware::mapRequest(function (RequestInterface $request) use ($channelName, $sensitiveKeys) {
                 $recordings = [
