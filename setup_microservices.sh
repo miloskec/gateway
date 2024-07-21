@@ -1,4 +1,19 @@
 #!/bin/bash
+# Host to check for internet connectivity // 8.8.8.8
+host=${1:-"8.8.8.8"}
+# Number of ping attempts // 1
+ping_count=${2:-1}
+
+#set -x  # Print each command and its arguments as they execute
+set -e  # Immediately exit if any command exits with a non-zero status
+
+# Ping the host
+if ping -c "$ping_count" "$host" > /dev/null; then
+  echo "Internet is available."
+else
+  echo "Internet is not available!"
+  exit -1
+fi
 
 # Define the path to the sail command
 SAIL_PATH="vendor/bin/sail"
@@ -111,10 +126,15 @@ echo "LOCAL_TZ: $LOCAL_TZ"
 # Compare and set the time zone if different
 if [ "$CONTAINER_TZ" != "$LOCAL_TZ" ]; then
   # Step 2.1: Run necessary commands as root inside the memcached container and set the time zone
+  docker exec -u root gateway-gateway-1 sh -c "ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone"
+  docker exec -u root gateway-mysql-1 sh -c "ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone"
   docker exec -u root gateway-memcached-1 sh -c "apk add --no-cache tzdata && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone"
 fi
 
 $SAIL_PATH artisan migrate
+# Step 2.2: Install necessary packages inside the memcached container to be able to examine memcached
+echo "Install netcat-openbsd libmemcached-tools..."
+docker exec -u root gateway-memcached-1 sh -c "apk update && apk add --no-cache libmemcached netcat-openbsd"
 
 # Step 3: Get into kafka folder
 docker_compose_up "kafka"
@@ -133,13 +153,16 @@ docker_compose_up "authorization"
 # Step 7: Get into profile folder
 docker_compose_up "profile"
 
-# Step 8: Run artisan commands in authentication folder
+# Step 8: Get into datadog folder
+docker_compose_up "datadog"
+
+# Step 9: Run artisan commands in authentication folder
 run_artisan_commands "authentication" "authentication_setup.log"
 
-# Step 9: Run artisan commands in authorization folder
+# Step 10: Run artisan commands in authorization folder
 run_artisan_commands "authorization" "authorization_setup.log"
 
-# Step 10: Run artisan commands in profile folder
+# Step 11: Run artisan commands in profile folder
 run_artisan_commands "profile" "profile_setup.log"
 
 echo "All operations completed successfully."

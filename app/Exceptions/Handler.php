@@ -66,7 +66,7 @@ class Handler extends ExceptionHandler
     protected function formatErrorResponse(Throwable $exception, int $status): array
     {
         $exceptionDetails = $this->getExceptionDetails($exception);
-
+        
         $baseResponse = [
             'status' => $status,
             'source' => config('app.name').' API',

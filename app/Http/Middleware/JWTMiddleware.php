@@ -26,7 +26,6 @@ class JWTMiddleware
         $cacheKey = generateJwtUserKey($token);
 
         $user = Cache::remember($cacheKey, config('jwt.ttl'), function () use ($token) {
-            Log::channel('gateway')->info('JWT Middleware CREATING: '.$token);
             $response = $this->authService->verifyJWT($token);
 
             if ($response?->getStatusCode() !== Response::HTTP_OK) {
@@ -42,9 +41,7 @@ class JWTMiddleware
             // Convert the user data array to a User model instance
             return new User($userData);
         });
-
-        Log::channel('gateway')->info('JWT Middleware USER: '.$user->id);
-        // Attach the user model to the request
+        // Attach the user model to the request but INTERNALLY ONLY
         $request->setUserResolver(function () use ($user) {
             return $user;
         });
