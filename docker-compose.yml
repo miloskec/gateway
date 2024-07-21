@@ -29,6 +29,7 @@ services:
             - sail
         depends_on:
             - mysql
+            - memcached
     mysql:
         image: 'mysql/mysql-server:8.0'
         ports:
@@ -57,6 +58,12 @@ services:
             - '${MEMCACHED_PORT:-11211}:11211'
         environment:
             TZ: ${TZ}
+        healthcheck:
+            test: ["CMD", "nc", "-z", "localhost", "11211"]
+            interval: 10s
+            timeout: 5s
+            retries: 3
+            start_period: 10s
         networks:
             - sail
 networks:
