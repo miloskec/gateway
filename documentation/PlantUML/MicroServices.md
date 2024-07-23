@@ -25,7 +25,7 @@ git clone git@github.com:miloskec/kafka.git
 
 
 ### 2. Prepare the development environment and install dependencies
-Each microservice requires a local development environment capable of running PHP 8.3 and its dependencies. It's recommended to add the ppa:ondrej/php repository to your system to ensure you have the latest PHP version and extensions like Memcache available. Install PHP, Apache2, MySQL 8, and other necessary components.
+Each microservice requires a local development environment capable of running PHP 8.3 and its dependencies. It's recommended to add the ppa:ondrej/xxxx repository to your system to ensure you have the latest PHP version and extensions like Memcache available. Install PHP, Apache2, MySQL 8, and other necessary components.
 Something like:  
 ```sh
 sudo add-apt-repository ppa:ondrej/php
