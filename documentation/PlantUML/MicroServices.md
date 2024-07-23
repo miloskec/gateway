@@ -108,11 +108,13 @@ The API endpoints are documented and can be tested using the Postman collection 
 2. **User Login**:
     - User sends a login request to the Gateway.
     - Gateway forwards the request to the Authentication Service for JWT token generation.
+    - If the user successfully logs in, the JWT token is stored in the cache to prevent unnecessary communication with the Authentication Service for subsequent requests until the token expires or is invalidated (e.g., upon issuing a refresh token).
 
 3. **Fetching Profile**:
     - User sends a profile fetch request to the Gateway.
     - Gateway applies JWT authentication and authorization checks.
     - Upon successful authorization, Gateway forwards the request to the Profile Service.
+    - Additionally, as part of the security measures, each service behind the Gateway also performs its own identity verification by validating the JWT token using the same JWT_SECRET used by the Authentication Service that initially issued the token. This provides an added layer of protection within the gateway system, ensuring that each service independently confirms the user’s identity.
 
 4. **Background Jobs**:
     - Authentication Service runs jobs for sending email notifications and producing Kafka messages.
