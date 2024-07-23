@@ -66,10 +66,10 @@ class Handler extends ExceptionHandler
     protected function formatErrorResponse(Throwable $exception, int $status): array
     {
         $exceptionDetails = $this->getExceptionDetails($exception);
-        
+
         $baseResponse = [
             'status' => $status,
-            'source' => config('app.name').' API',
+            'source' => config('app.name') . ' API',
             'message' => $exception->getMessage(),
             'error' => [
                 'type' => get_class($exception),
@@ -77,8 +77,10 @@ class Handler extends ExceptionHandler
             ],
         ];
 
-        if ($exception instanceof ConnectException) {
-            $baseResponse['source'] = ucfirst($exception->getRequest()->getUri()->getHost()).' API';
+        if ($exception instanceof AuthorizationException) {
+            $baseResponse['source'] = 'Authorization API';
+        } elseif ($exception instanceof ConnectException) {
+            $baseResponse['source'] = ucfirst($exception->getRequest()->getUri()->getHost()) . ' API';
             $baseResponse['error']['details'] = ['connection' => $exception->getHandlerContext()['error']];
         } elseif ($exception instanceof ClientException || $exception instanceof ServerException) {
             $baseResponse['source'] = $exceptionDetails['source'];

@@ -21,7 +21,7 @@ class AuthorizeProfileAccessMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         $user = $request->user();
-        $profileId = $request->route('id');
+        $profileId = (int) $request->route('id');
 
         //$cacheKey = "roles_{$user->username}_{$user->email}";
 
