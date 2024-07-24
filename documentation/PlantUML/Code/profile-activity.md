@@ -5,26 +5,22 @@
 ```plantuml
 @startuml
 start
-:User Request to Fetch Profile;
-:GatewayController receives request;
-:GatewayController forwards request to JWTMiddleware;
-:JWTMiddleware verifies JWT;
-if (JWT valid?) then (yes)
-    :JWTMiddleware forwards request to AuthorizeProfileAccessMiddleware;
-    :AuthorizeProfileAccessMiddleware verifies user authorization;
-    if (User authorized?) then (yes)
-        :AuthorizeProfileAccessMiddleware forwards request back to GatewayController;
-        :GatewayController forwards request to ProfileController;
-        :ProfileController fetches user profile data;
-        :ProfileService processes profile logic;
-        :ProfileResource formats profile data;
-        :ProfileService sends formatted profile data back to GatewayController;
-        :GatewayController sends profile data to User;
+:User requests profile fetch;
+:JWT Middleware receives request and checks JWT;
+if (Is JWT valid?) then (yes)
+    :JWT Middleware forwards request to Authorization Middleware;
+    :Authorization Middleware verifies user authorization;
+    if (Is user authorized?) then (yes)
+        :Authorization Middleware forwards request "back" to Profile Route;
+        :Profile Route forwards request to Proxy Controller;
+        :Proxy Controller forwards request to Profile Microservice;
+        :Profile Microservice sends profile data back to Proxy Controller;
+        :Proxy Controller sends profile data to User;
     else (no)
-        :AuthorizeProfileAccessMiddleware returns authorization error;
+        :Authorization Middleware returns authorization error;
     endif
 else (no)
-    :JWTMiddleware returns authentication error;
+    :JWT Middleware returns authentication error;
 endif
 stop
 @enduml
