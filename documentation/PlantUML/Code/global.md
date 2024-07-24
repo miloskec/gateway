@@ -9,12 +9,12 @@ allowmixing
 actor User
 
 package "Gateway Service" {
-  component GatewayController
   component JWTMiddleware
   component AuthorizeProfileAccessMiddleware
-  note right of GatewayController
-    Microservice
-  end note
+  component ProxyController
+  component AuthController
+  component AuthRoutes
+  component PublicRoutes
 }
 
 package "Authentication Service" {
@@ -24,9 +24,6 @@ package "Authentication Service" {
   component EmailService
   component KafkaProducer
   component AuthJobs
-  note right of AuthController
-    Microservice
-  end note
 }
 
 package "Authorization Service" {
@@ -34,9 +31,6 @@ package "Authorization Service" {
   component AutzService
   component AutzResource
   component KafkaConsumerAuth
-  note right of AutzController
-    Microservice
-  end note
 }
 
 package "Profile Service" {
@@ -45,22 +39,22 @@ package "Profile Service" {
   component ProfileResource
   component KafkaConsumerProfile
   component ProfileJobs
-  note right of ProfileController
-    Microservice
-  end note
 }
 
-User --> GatewayController : Register, Login, Logout, Fetch Profile
+User --> PublicRoutes: Register, Login
+PublicRoutes --> AuthController
 
-GatewayController --> JWTMiddleware : Fetch Profile
+User --> AuthRoutes: Logout, Fetch Profile
+AuthRoutes --> JWTMiddleware
+
 JWTMiddleware --> AuthController : Verify JWT for Fetch Profile
 JWTMiddleware --> AuthorizeProfileAccessMiddleware : Fetch Profile
 
 AuthorizeProfileAccessMiddleware --> AutzController : Verify Authorization for Fetch Profile
-AuthorizeProfileAccessMiddleware --> GatewayController : Authorization Result
+AuthorizeProfileAccessMiddleware --> ProxyController : Authorization Result
 
-GatewayController --> AuthController : Register, Login, Logout
-GatewayController --> ProfileController : Fetch Profile Data - Done only if user is authorized
+ProxyController --> ProfileController : Fetch Profile Data - Done only if user is authorized
+ProfileController --> ProfileService : Get data
 
 AuthController --> AuthService
 AuthService --> AuthResource
