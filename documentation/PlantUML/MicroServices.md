@@ -1,6 +1,6 @@
 # Project Overview
 
-This project is a microservices-based application designed for user management, including authentication, authorization, and profile management. It leverages Docker containers for each service to ensure modularity and ease of deployment. The main components of this system include the Gateway Service, Authentication Service, Authorization Service, Profile Service, and Kafka for asynchronous communication between services.
+This project is a microservices-based application designed for user management, including authentication and authorization functionalities. It uses Docker containers for each service to ensure modularity and easy of deployment. The main components of this architecture include the Gateway Service, Authentication Service, Authorization Service, Profile Service, and Kafka for asynchronous communication between services. Additionally, a DataDog agent is implemented as a dedicated service that collects logs from all services and forwards them to DataDog (which offers several advantages for microservices architectures, such as centralized logging, real-time performance monitoring, and detailed observability).
 
 ## Requirements
 
@@ -23,9 +23,25 @@ git clone git@github.com:miloskec/profile.git
 git clone git@github.com:miloskec/kafka.git
 ```
 
-### 2. Run the setup script
 
-Navigate to the gateway directory and execute the setup script to automatically set up the microservices:
+### 2. Prepare the development environment and install dependencies
+Each microservice requires a local development environment capable of running PHP 8.3 and its dependencies. It's recommended to add the ppa:ondrej/xxxx repository to your system to ensure you have the latest PHP version and extensions like Memcache available. Install PHP, Apache2, MySQL 8, and other necessary components.
+Something like:  
+```sh
+sudo add-apt-repository ppa:ondrej/php
+sudo apt-get update
+sudo apt-get install php8.3 apache2 mysql-server
+``` 
+Navigate to each service directory and execute composer install. To avoid issues with missing PHP extensions that are not critical for local development, such as ext-rdkafka, you can bypass the platform requirements:
+
+```sh
+composer install --ignore-platform-req=ext-rdkafka
+```
+Ensure you copy .env.example to .env in each service and configure the necessary settings, such as database connections and API keys. For the Authentication service, include your mailer credentials, and for services integrated with DataDog, include your DataDog API key which can be obtained from your DataDog account.
+
+
+### 3. Run the setup script
+After setting up each microservice, navigate to the gateway directory and run the setup script to initialize and link all the services together. This script will use Docker Compose to orchestrate the containers and ensure all services are communicating effectively. 
 
 ```sh
 cd gateway
@@ -92,11 +108,13 @@ The API endpoints are documented and can be tested using the Postman collection 
 2. **User Login**:
     - User sends a login request to the Gateway.
     - Gateway forwards the request to the Authentication Service for JWT token generation.
+    - If the user successfully logs in, the JWT token is stored in the cache to prevent unnecessary communication with the Authentication Service for subsequent requests until the token expires or is invalidated (e.g., upon issuing a refresh token).
 
 3. **Fetching Profile**:
     - User sends a profile fetch request to the Gateway.
     - Gateway applies JWT authentication and authorization checks.
     - Upon successful authorization, Gateway forwards the request to the Profile Service.
+    - Additionally, as part of the security measures, each service behind the Gateway also performs its own identity verification by validating the JWT token using the same JWT_SECRET used by the Authentication Service that initially issued the token. This provides an added layer of protection within the gateway system, ensuring that each service independently confirms the user’s identity.
 
 4. **Background Jobs**:
     - Authentication Service runs jobs for sending email notifications and producing Kafka messages.
