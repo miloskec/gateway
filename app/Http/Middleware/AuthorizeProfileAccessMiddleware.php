@@ -11,7 +11,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AuthorizeProfileAccessMiddleware
 {
-    public function __construct(protected readonly AutzService $autzService) {}
+    public function __construct(protected readonly AutzService $autzService)
+    {
+    }
 
     /**
      * Handle an incoming request.
@@ -36,7 +38,7 @@ class AuthorizeProfileAccessMiddleware
         // Check if user is admin or the owner of the profile
         if (
             in_array('admin', $rolesData['roles']) || // ToDo: If the roles data structure grows we will use more efficient data structure or method for role checking.
-           $user->id === $profileId
+            $user->id === $profileId
         ) {
             return $next($request);
         }

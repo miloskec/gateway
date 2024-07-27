@@ -47,7 +47,7 @@ class GuzzleServiceProvider extends ServiceProvider
                 ];
                 $recordings['headers'] = $this->filterSensitiveHeaders($request->getHeaders(), $sensitiveKeys);
                 // Log the request details
-                Log::channel($channelName)->info('Gateway request: ', $recordings);
+                !app()->environment('testing') ? Log::channel($channelName)->info('Gateway request: ', $recordings) : null;
 
                 return $request;
             })
@@ -55,10 +55,10 @@ class GuzzleServiceProvider extends ServiceProvider
         $gatewayStack->push(
             Middleware::mapResponse(function (ResponseInterface $response) use ($channelName) {
                 // Log the response details
-                Log::channel($channelName)->info('Service response: '.$response->getStatusCode(), [
+                !app()->environment('testing') ? Log::channel($channelName)->info('Service response: ' . $response->getStatusCode(), [
                     'headers' => $response->getHeaders(),
                     'body' => $response->getBody(),
-                ]);
+                ]) : null;
 
                 return $response;
             })
