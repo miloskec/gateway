@@ -13,20 +13,22 @@ use Symfony\Component\HttpFoundation\Response;
 
 class JWTMiddleware
 {
-    public function __construct(protected readonly AuthService $authService) {}
+    public function __construct(protected readonly AuthService $authService)
+    {
+    }
 
     public function handle(Request $request, Closure $next)
     {
         $token = $request->bearerToken();
 
-        if (! $token) {
+        if (!$token) {
             throw new AuthorizationException('Unauthorized', Response::HTTP_UNAUTHORIZED);
         }
 
         $cacheKey = generateJwtUserKey($token);
 
-        $user = Cache::remember($cacheKey, config('jwt.ttl'), function () use ($token) {
-            $response = $this->authService->verifyJWT($token);
+        $user = Cache::remember($cacheKey, config('jwt.ttl'), function () {
+            $response = $this->authService->verifyJWT();
 
             if ($response?->getStatusCode() !== Response::HTTP_OK) {
                 throw new AuthorizationException('Unauthorized', Response::HTTP_UNAUTHORIZED);
@@ -34,7 +36,7 @@ class JWTMiddleware
 
             $userData = json_decode($response->getBody(), true)['data'];
 
-            if (! $userData) {
+            if (!$userData) {
                 throw new AuthorizationException('Unauthorized', Response::HTTP_UNAUTHORIZED);
             }
 
