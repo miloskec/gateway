@@ -32,9 +32,7 @@ class AuthService
     {
         $cacheKey = generateJwtUserKey($token);
 
-        $response = $this->client->post("{$this->authServiceUrl}/logout", [
-            'json' => ['token' => $token],
-        ]);
+        $response = $this->client->post("{$this->authServiceUrl}/logout");
 
         $responseDecoded = json_decode($response->getBody(), true);
 
@@ -47,9 +45,7 @@ class AuthService
 
     public function verify($token)
     {
-        return $this->client->post("{$this->authServiceUrl}/verify", [
-            'json' => ['token' => $token],
-        ]);
+        return $this->client->post("{$this->authServiceUrl}/verify");
     }
 
     public function passwordRecovery($email)
@@ -66,18 +62,16 @@ class AuthService
         ]);
     }
 
-    public function resetPassword($token, $newPassword, $currentPassword)
+    public function resetPassword($newPassword, $currentPassword)
     {
         return $this->client->post("{$this->authServiceUrl}/reset-password", [
-            'json' => ['token' => $token, 'password' => $newPassword, 'current_password' => $currentPassword],
+            'json' => ['password' => $newPassword, 'current_password' => $currentPassword],
         ]);
     }
 
-    public function verifyJWT($token)
+    public function verifyJWT()
     {
-        return $this->client->post("{$this->authServiceUrl}/verify-jwt", [
-            'json' => ['token' => $token],
-        ]);
+        return $this->client->post("{$this->authServiceUrl}/verify-jwt");
     }
 
     public function refreshJWT($token)
@@ -85,8 +79,6 @@ class AuthService
         $cacheKey = generateJwtUserKey($token);
         Cache::forget($cacheKey);
 
-        return $this->client->post("{$this->authServiceUrl}/refresh-token", [
-            'json' => ['token' => $token],
-        ]);
+        return $this->client->post("{$this->authServiceUrl}/refresh-token");
     }
 }

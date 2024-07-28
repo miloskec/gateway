@@ -42,7 +42,7 @@ class AuthController extends Controller
 
     public function verifyJWT(Request $request)
     {
-        return $this->authService->verifyJWT($request->bearerToken());
+        return $this->authService->verifyJWT();
     }
 
     public function passwordRecovery(PasswordRecoveryRequest $request)
@@ -57,7 +57,7 @@ class AuthController extends Controller
 
     public function resetPassword(PasswordResetRequest $request)
     {
-        return $this->authService->resetPassword($request->bearerToken(), $request->password, $request->current_password);
+        return $this->authService->resetPassword($request->password, $request->current_password);
     }
 
     public function refresh(Request $request)
