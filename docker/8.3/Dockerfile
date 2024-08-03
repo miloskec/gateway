@@ -69,8 +69,6 @@ COPY . .
 
 RUN chown -R sail:sail /var/www/html
 
-#RUN php artisan migrate --force
-
 EXPOSE 8000
 
 ENTRYPOINT ["start-container"]
