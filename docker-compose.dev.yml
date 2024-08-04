@@ -1,6 +1,6 @@
 services:
     gateway:
-        image: gateway:dev
+        image: gateway:latest
         extra_hosts:
             - 'host.docker.internal:host-gateway'
         ports:
