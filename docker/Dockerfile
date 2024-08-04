@@ -5,10 +5,12 @@ LABEL maintainer="Taylor Otwell"
 ARG APP_TIMEZONE
 ARG WWWGROUP
 ARG NODE_VERSION=20
+ARG MYSQL_FORWARD_DB_PORT
 ARG MYSQL_CLIENT="mysql-client"
 ARG POSTGRES_VERSION=15
 
 ENV DEBIAN_FRONTEND=noninteractive
+ENV MYSQL_FORWARD_DB_PORT=$MYSQL_FORWARD_DB_PORT
 
 RUN apt-get update && apt-get install -y tzdata
 
@@ -67,8 +69,10 @@ WORKDIR /var/www/html
 
 COPY . .
 
-COPY .env.example /var/www/html/.env
-
 RUN composer install --ignore-platform-reqs
 
 RUN chown -R $WWWGROUP:sail /var/www/html
+
+EXPOSE 8000
+
+ENTRYPOINT ["start-container"]

@@ -1,6 +1,6 @@
 services:
     gateway:
-        image: gateway:dev
+        image: gateway:latest
         extra_hosts:
             - 'host.docker.internal:host-gateway'
         ports:
@@ -24,6 +24,7 @@ services:
             - '/var/www/html/storage/logs'
             - '/var/www/html/logs'
             - './artisan:/var/www/html/artisan:ro'
+        tty: true
         networks:
             - sail
         depends_on:
