@@ -67,4 +67,8 @@ WORKDIR /var/www/html
 
 COPY . .
 
-RUN chown -R sail:sail /var/www/html
+COPY .env.example /var/www/html/.env
+
+RUN composer install --ignore-platform-reqs
+
+RUN chown -R $WWWGROUP:sail /var/www/html
