@@ -2,4 +2,4 @@
 
 ## Setup Instructions
 
-[You should download this script for the project setup] (https://github.com/miloskec/setupscript)
+[You should download this script for the project setup](https://github.com/miloskec/setupscript)
