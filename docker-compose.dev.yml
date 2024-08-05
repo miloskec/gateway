@@ -13,7 +13,7 @@ services:
             retries: 3
         environment:
             TZ: ${TZ}
-            WWWUSER: '${WWWUSER}'‚
+            WWWUSER: '${WWWUSER}'
             WWWGROUP: '${WWWGROUP}'
             LARAVEL_SAIL: 1
             XDEBUG_MODE: '${SAIL_XDEBUG_MODE:-off}'
