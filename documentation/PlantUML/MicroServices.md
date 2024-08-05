@@ -11,7 +11,7 @@ This project is a microservices-based application designed for user management, 
 
 ## Setup Instructions
 
-### **If your all project branches are set to the production-prepare you will only need to follow instructions from the https://github.com/miloskec/gateway/blob/production-prepare/README.md**
+### If all your project branches are set to 'production-prepare', simply follow the instructions provided at this [link](https://github.com/miloskec/gateway/blob/production-prepare/README.md)
 
 ### 1. Clone the repositories
 
