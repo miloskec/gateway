@@ -1,6 +1,6 @@
 services:
     gateway:
-        image: gateway:latest
+        image: miloskec/gateway:latest
         extra_hosts:
             - 'host.docker.internal:host-gateway'
         ports:
@@ -54,7 +54,7 @@ services:
         networks:
             - sail
     memcached:
-        image: gateway-memcached:latest
+        image: miloskec/gateway-memcached:latest
         ports:
             - '${MEMCACHED_PORT:-11211}:11211'
         environment:
