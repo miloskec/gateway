@@ -1,0 +1,145 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gateway-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gateway
+  template:
+    metadata:
+      labels:
+        app: gateway
+    spec:
+      containers:
+      - name: gateway
+        image: miloskec/gateway:latest
+        env:
+        - name: AUTHENTICATION_SERVICE_HOST
+          value: "authentication-service"
+        - name: AUTHENTICATION_SERVICE_PORT
+          value: "8002"
+        - name: AUTH_SERVICE_URL
+          value: "http://authentication-service:8002/api"
+        - name: PROFILE_SERVICE_HOST
+          value: "profile-service"
+        - name: PROFILE_SERVICE_PORT
+          value: "8003"
+        - name: PROFILE_SERVICE_URL
+          value: "http://profile-service:8003/api"
+        - name: AUTHORIZATION_SERVICE_HOST
+          value: "authorization-service"
+        - name: AUTHORIZATION_SERVICE_PORT
+          value: "8004"
+        - name: AUTHZ_SERVICE_URL
+          value: "http://authorization-service:8004/api"
+        - name: DB_HOST
+          value: "mysql-service"
+        - name: DB_PORT
+          value: "3306"
+        - name: DB_DATABASE
+          value: "laravel"
+        - name: DB_USERNAME
+          value: "sail"
+        - name: DB_PASSWORD
+          value: "password"
+        - name: MEMCACHED_HOST
+          value: "memcached-service"
+        - name: MEMCACHED_PORT
+          value: "11211"
+        - name: JWT_TTL
+          value: "600"
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: app-storage-logs
+          mountPath: /var/www/html/storage/logs
+        - name: app-logs
+          mountPath: /var/www/html/logs
+      volumes:
+      - name: app-storage-logs
+        persistentVolumeClaim:
+          claimName: app-pslc
+      - name: app-logs
+        persistentVolumeClaim:
+          claimName: app-plc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gateway-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: gateway
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: app-storage-logs
+  labels:
+    type: app-storage-logs
+spec:
+  capacity:
+    storage: 5Gi
+  accessModes:
+  - ReadWriteOnce
+  volumeMode: Filesystem
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: standard
+  hostPath:
+    path: /mnt/slogs
+    type: DirectoryOrCreate
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: app-pslc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: standard
+  selector:
+    matchLabels:
+      type: app-storage-logs
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: app-logs
+  labels:
+    type: app-logs
+spec:
+  capacity:
+    storage: 5Gi
+  accessModes:
+  - ReadWriteOnce
+  volumeMode: Filesystem
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: standard
+  hostPath:
+    path: /mnt/logs
+    type: DirectoryOrCreate
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: app-plc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: standard
+  selector:
+    matchLabels:
+      type: app-logs
