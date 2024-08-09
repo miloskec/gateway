@@ -16,24 +16,12 @@ spec:
       - name: gateway
         image: miloskec/gateway:latest
         env:
-        - name: AUTHENTICATION_SERVICE_HOST
-          value: "authentication-service"
-        - name: AUTHENTICATION_SERVICE_PORT
-          value: "8002"
         - name: AUTH_SERVICE_URL
-          value: "http://authentication-service:8002/api"
-        - name: PROFILE_SERVICE_HOST
-          value: "profile-service"
-        - name: PROFILE_SERVICE_PORT
-          value: "8003"
+          value: "http://authentication-service.default/api"
         - name: PROFILE_SERVICE_URL
-          value: "http://profile-service:8003/api"
-        - name: AUTHORIZATION_SERVICE_HOST
-          value: "authorization-service"
-        - name: AUTHORIZATION_SERVICE_PORT
-          value: "8004"
+          value: "http://profile-service/api"
         - name: AUTHZ_SERVICE_URL
-          value: "http://authorization-service:8004/api"
+          value: "http://authorization-service/api"
         - name: DB_HOST
           value: "mysql-service"
         - name: DB_PORT
@@ -52,6 +40,10 @@ spec:
           value: "600"
         ports:
         - containerPort: 80
+        lifecycle:
+          postStart:
+            exec:
+              command: ["php", "artisan", "config:clear"]
         volumeMounts:
         - name: app-storage-logs
           mountPath: /var/www/html/storage/logs
