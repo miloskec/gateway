@@ -58,7 +58,7 @@ spec:
   accessModes:
   - ReadWriteOnce
   volumeMode: Filesystem
-  persistentVolumeReclaimPolicy: Retain
+  persistentVolumeReclaimPolicy: Delete # Change to Retain
   storageClassName: standard
   hostPath:
     path: /mnt/mysql
