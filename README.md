@@ -1,4 +1,4 @@
-# Gateway Microservice [Please check the docs first](https://github.com/miloskec/gateway/blob/basic/documentation/MicroServices%20gateway%20documentation.pdf)
+# Gateway Microservice [Please check the docs first](https://github.com/miloskec/gateway/blob/dockerhub-example/documentation/MicroServices%20gateway%20documentation.pdf)
 
 ## Setup Instructions
 
