@@ -11,6 +11,12 @@ This project is a microservices-based application designed for user management, 
 
 ## Setup Instructions
 
+### NOTE 
+**If your branch is dockerhub-example or kubernetes-example or kubernetes-nodes-example you may follow the instructions provided at those branches and bypass the instructions given below.**
+[dockerhub-example](https://github.com/miloskec/gateway/blob/dockerhub-example/README.md) 
+[kubernetes-example](https://github.com/miloskec/gateway/blob/kubernetes-example/README.md) 
+[kubernetes-nodes-example](https://github.com/miloskec/gateway/blob/kubernetes-nodes-example/README.md) 
+
 ### 1. Prepare the development environment and install dependencies
 Each microservice requires a local development environment capable of running PHP 8.3 and its dependencies. It's recommended to add the ppa:ondrej/xxxx repository to your system to ensure you have the latest PHP version and extensions like Memcache available. Install PHP, Apache2, MySQL 8, and other necessary components.
 Something like:  
