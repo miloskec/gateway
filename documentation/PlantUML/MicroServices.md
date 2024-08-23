@@ -17,6 +17,15 @@ This project is a microservices-based application designed for user management, 
 [kubernetes-example](https://github.com/miloskec/gateway/blob/kubernetes-example/README.md) 
 [kubernetes-nodes-example](https://github.com/miloskec/gateway/blob/kubernetes-nodes-example/README.md) 
 
+Before executing this script, ensure that the user is added to the Docker group
+
+```sh
+groups $USER
+#if there is no **docker** then run:
+sudo usermod -aG docker $USER
+```
+
+
 ### 1. Prepare the development environment and install dependencies
 Each microservice requires a local development environment capable of running PHP 8.3 and its dependencies. It's recommended to add the ppa:ondrej/xxxx repository to your system to ensure you have the latest PHP version and extensions like Memcache available. Install PHP, Apache2, MySQL 8, and other necessary components.
 Something like:  
@@ -35,13 +44,6 @@ composer install --ignore-platform-req=ext-rdkafka
 ```
 
 ### NOTE
-Before executing this script, ensure that the user is added to the Docker group
-
-```sh
-groups $USER
-#if there is no **docker** then run:
-sudo usermod -aG docker $USER
-```
 
 **If all your project branches are NOT set to 'basic', you may follow the instructions provided at those branches and bypass the instructions given below.**
 [link](https://github.com/miloskec/gateway/blob/production-prepare/README.md) 
