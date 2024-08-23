@@ -6,6 +6,7 @@ This project is a microservices-based application designed for user management, 
 
 - **Docker**: To run the microservices in isolated containers.
 - **Docker Compose**: To manage multi-container Docker applications.
+- **Kubernetes**: To manage microservices, networking, communication... into node / nodes
 - **Git**: To clone the repositories.
 - **Postman**: For API testing and documentation.
 
