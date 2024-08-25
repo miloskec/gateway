@@ -16,7 +16,6 @@ spec:
       - name: mysql
         image: mysql/mysql-server:8.0
         env:
-        env:
         - name: MYSQL_ROOT_PASSWORD
           valueFrom:
             secretKeyRef:
@@ -44,7 +43,7 @@ spec:
             command:
             - /bin/sh
             - -c
-            - mysql --user=$MYSQL_USER --password=$MYSQL_PASSWORD -e 'SELECT 1'
+            - 'mysql --user=$MYSQL_USER --password=$MYSQL_PASSWORD -e "SELECT 1"'
           initialDelaySeconds: 30
           periodSeconds: 30
           timeoutSeconds: 10
