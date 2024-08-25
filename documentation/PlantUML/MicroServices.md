@@ -6,15 +6,50 @@ This project is a microservices-based application designed for user management, 
 
 - **Docker**: To run the microservices in isolated containers.
 - **Docker Compose**: To manage multi-container Docker applications.
+- **Kubernetes**: To manage microservices, networking, communication... into node / nodes
 - **Git**: To clone the repositories.
 - **Postman**: For API testing and documentation.
 
 ## Setup Instructions
 
-### NOTE
-**If all your project branches are set to 'production-prepare', you may follow the instructions provided at this [link](https://github.com/miloskec/gateway/blob/production-prepare/README.md) and bypass the instructions given below.**
+### NOTE 
+**If your branch is dockerhub-example or kubernetes-example or kubernetes-nodes-example you may follow the instructions provided at those branches and bypass the instructions given below.**
+[dockerhub-example](https://github.com/miloskec/gateway/blob/dockerhub-example/README.md) 
+[kubernetes-example](https://github.com/miloskec/gateway/blob/kubernetes-example/README.md) 
+[kubernetes-nodes-example](https://github.com/miloskec/gateway/blob/kubernetes-nodes-example/README.md) 
 
-### 1. Clone the repositories
+Before executing this script, ensure that the user is added to the Docker group
+
+```sh
+groups $USER
+#if there is no **docker** then run:
+sudo usermod -aG docker $USER
+```
+
+
+### 1. Prepare the development environment and install dependencies
+Each microservice requires a local development environment capable of running PHP 8.3 and its dependencies. It's recommended to add the ppa:ondrej/xxxx repository to your system to ensure you have the latest PHP version and extensions like Memcache available. Install PHP, Apache2, MySQL 8, and other necessary components.
+Something like:  
+```sh
+sudo add-apt-repository ppa:ondrej/php
+sudo apt-get update
+sudo apt-get install php8.3 apache2 mysql-server php8.3-xml php8.3-dom php8.3-curl php8.3-intl php8.3-mbstring php8.3-memcached
+```
+
+Ensure you copy .env.example to .env in each service and configure the necessary settings, such as database connections and API keys. For the Authentication service, include your mailer credentials, and for services integrated with DataDog, include your DataDog API key which can be obtained from your DataDog account.
+
+Navigate to each service directory and execute composer install. To avoid issues with missing PHP extensions that are not critical for local development, such as ext-rdkafka, you can bypass the platform requirements:
+
+```sh
+composer install --ignore-platform-req=ext-rdkafka
+```
+
+### NOTE
+
+**If all your project branches are NOT set to 'basic', you may follow the instructions provided at those branches and bypass the instructions given below.**
+[link](https://github.com/miloskec/gateway/blob/production-prepare/README.md) 
+
+### 2. Clone the repositories
 
 Start by cloning the following repositories:
 
@@ -24,27 +59,17 @@ git clone git@github.com:miloskec/authentication.git
 git clone git@github.com:miloskec/authorization.git
 git clone git@github.com:miloskec/profile.git
 git clone git@github.com:miloskec/kafka.git
+git clone git@github.com:miloskec/datadog.git
 ```
-
-
-### 2. Prepare the development environment and install dependencies
-Each microservice requires a local development environment capable of running PHP 8.3 and its dependencies. It's recommended to add the ppa:ondrej/xxxx repository to your system to ensure you have the latest PHP version and extensions like Memcache available. Install PHP, Apache2, MySQL 8, and other necessary components.
-Something like:  
+Note: Please have in mind that gateway, authentication, authorization and profile repos should be set to the basic branch:
 ```sh
-sudo add-apt-repository ppa:ondrej/php
-sudo apt-get update
-sudo apt-get install php8.3 apache2 mysql-server
-``` 
-Navigate to each service directory and execute composer install. To avoid issues with missing PHP extensions that are not critical for local development, such as ext-rdkafka, you can bypass the platform requirements:
-
-```sh
-composer install --ignore-platform-req=ext-rdkafka
+git checkout basic
 ```
-Ensure you copy .env.example to .env in each service and configure the necessary settings, such as database connections and API keys. For the Authentication service, include your mailer credentials, and for services integrated with DataDog, include your DataDog API key which can be obtained from your DataDog account.
-
 
 ### 3. Run the setup script
 After setting up each microservice, navigate to the gateway directory and run the setup script to initialize and link all the services together. This script will use Docker Compose to orchestrate the containers and ensure all services are communicating effectively. 
+
+Note: Please have in mind that there are some host ports in use by mysql, memcached... you can stop those services before script execution - or you can add FORWARD_DB_PORT to your services or/and update MEMCACHED_PORT...
 
 ```sh
 cd gateway
@@ -57,6 +82,8 @@ The setup script performs the following tasks:
 - Brings up the Docker containers for each service.
 - Runs database migrations and seeds the necessary data.
 - Starts background jobs for processing tasks like sending email notifications and consuming Kafka messages.
+
+After successfully setting up services, you can import the Postman collection and corresponding environments and start testing.
 
 ## Services and Their Roles
 
