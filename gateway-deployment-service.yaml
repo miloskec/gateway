@@ -28,11 +28,20 @@ spec:
         - name: DB_PORT
           value: "3306"
         - name: DB_DATABASE
-          value: "laravel"
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: MYSQL_DATABASE
         - name: DB_USERNAME
-          value: "sail"
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: MYSQL_USER
         - name: DB_PASSWORD
-          value: "password"
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: MYSQL_PASSWORD
         - name: MEMCACHED_HOST
           value: "memcached-service"
         - name: MEMCACHED_PORT
