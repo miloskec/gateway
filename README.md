@@ -28,3 +28,73 @@ After completing the Open AppSec installation:
 
 For more detailed instructions and troubleshooting tips, refer to the Open AppSec documentation link above.
 
+
+# Open AppSec Installation Guide
+
+## Instructions for Installing Open AppSec with Kubernetes Ingress
+
+1. Download and run the Open AppSec Kubernetes Installer:
+   ```bash
+   wget https://downloads.openappsec.io/open-appsec-k8s-install && chmod +x open-appsec-k8s-install
+   ./open-appsec-k8s-install
+   ```
+
+2. The installer will generate HELM charts/manifests (YAMLs), and you will be able to review and/or deploy them.
+
+### Ingress Setup (Step 1 of 3)
+
+When prompted, you will be given options for working with an existing Ingress resource:
+
+- **Options**:
+  1. Duplicate an existing Ingress and add open-appsec to it (existing and new ingresses will run side-by-side)
+  2. Add open-appsec to an existing Ingress resource
+
+   Follow the prompts to duplicate or add Open AppSec to your selected Ingress.
+
+### Policy Setup (Step 2 of 3)
+
+You can use the default policy or change it:
+
+- **Rules**:
+   - Name             : default
+   - Description      : Web Application and API Best Practice
+   - Namespace        : All
+   - Ingress Rule     : All
+   - Mode             : detect-learn
+   - Protection Level : default
+   - Log Triggers     : [appsec-log-trigger]
+   - Web Response     : 403-forbidden
+
+You may modify the rule by choosing options such as setting the mode, protection level, log trigger, and web response.
+
+### Example: Change the Mode to "prevent-learn"
+
+1. When prompted to choose the option for the rule setup, select "Set Mode".
+2. Choose the option "prevent-learn" to change the rule to active prevention mode.
+   
+Save the updated rule configuration.
+
+### Saving the Setup and Applying (Step 3 of 3)
+
+1. Choose to save the manifest (YAML) or Helm chart:
+   - `kubectl apply -f open-appsec-policy.yaml`
+   - `helm install <filename>`
+
+2. Run the following commands to apply the configuration:
+   ```bash
+   helm install open-appsec-k8s-nginx-ingress-latest.tgz --name-template open-appsec -n appsec --create-namespace --set appsec.mode=standalone --set appsec.persistence.enabled=false --set controller.ingressClassResource.name="appsec-nginx" --set controller.ingressClassResource.controllerValue="k8s.io/appsec-nginx" --set controller.terminationGracePeriodSeconds=300 --set appsec.playground=false --set appsec.userEmail=""
+   ```
+
+3. Apply the Ingress and policy YAML:
+   ```bash
+   kubectl apply -f ingress.yaml
+   kubectl apply -f open-appsec-policy.yaml
+   ```
+
+4. Open AppSec installation completed!
+
+For troubleshooting and support, visit:
+[Open AppSec Support](https://openappsec.io/support)
+
+For release notes and known limitations, visit:
+[Release Notes](https://docs.openappsec.io/release-notes)
