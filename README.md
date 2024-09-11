@@ -28,6 +28,9 @@ After completing the Open AppSec installation:
 
 For more detailed instructions and troubleshooting tips, refer to the Open AppSec documentation link above.
 
+For a detailed explanation of how it works, you can refer to the "Hello World" example project that integrates Ingress and Open AppSec. You can find the project here: Open AppSec Example Project.
+
+[This example](https://github.com/miloskec/ingress-test-app) **provides a practical demonstration, walking through the essential setup and showcasing the functionality of Ingress and Open AppSec.**
 
 # Open AppSec Installation Guide
 
