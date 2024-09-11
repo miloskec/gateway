@@ -97,11 +97,12 @@ Save the updated rule configuration.
 4. Open AppSec installation completed!
 
 
-### Open AppSec with Minikube
-
-When using Minikube, you will need to start the tunnel. Once the tunnel is active, give it a few moments for Open AppSec Ingress to recognize and assign an IP address. After that, you can test the setup using either the Minikube IP or `localhost` (as previously defined in your hosts file). If you're working under WSL2, remember to update the hosts file on Windows as well. 
- 
-Once everything is configured, you can use the provided Postman collection, for example, to log in as an admin and verify that the service is responding correctly. After confirming the service functionality, you can test security aspects like SQL injection, as demonstrated in the **Login/Injection/login admin SQL Injection** test. This should return a `403 Forbidden` response, indicating that the OWASP protection is working as expected. 
+5. Final steps - Open AppSec with Minikube
+    - When using Minikube, you will need to start the tunnel. Once the tunnel is active, give it a few moments for Open AppSec Ingress to recognize and assign an IP address. 
+    - After that, you can test the setup using either the Minikube IP or `localhost` (as previously defined in your hosts file). If you're working under WSL2, remember to update the hosts file on Windows as well. 
+    
+    - Once everything is configured, you can use the provided Postman collection, for example, to log in as an admin and verify that the service is responding correctly. 
+    - After confirming the service functionality, you can test security aspects like SQL injection, as demonstrated in the **Login/Injection/login admin SQL Injection** test. This should return a `403 Forbidden` response, indicating that the OWASP protection is working as expected. 
  
 For troubleshooting and support, visit:
 [Open AppSec Support](https://openappsec.io/support)
