@@ -50,6 +50,17 @@ spec:
           value: "600"
         ports:
         - containerPort: 80
+        readinessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - "curl -f http://localhost:80/api/health || exit 1"
+          initialDelaySeconds: 10
+          periodSeconds: 30
+          timeoutSeconds: 10
+          successThreshold: 1
+          failureThreshold: 3
         lifecycle:
           postStart:
             exec:
@@ -72,7 +83,7 @@ kind: Service
 metadata:
   name: gateway-service
 spec:
-  type: LoadBalancer
+  #type: LoadBalancer
   selector:
     app: gateway
   ports:
