@@ -35,7 +35,7 @@ class GuzzleServiceProvider extends ServiceProvider
 
     private function getStack($channelName)
     {
-        $sensitiveKeys = ['username', 'password', 'grant_type', 'refresh_token', 'api_key', 'authorization', 'Authorization', 'x-api-key', 'x-api-secret', 'x-api-version'];
+        $sensitiveKeys = ['username', 'token', 'password', 'grant_type', 'refresh_token', 'api_key', 'authorization', 'Authorization', 'x-api-key', 'x-api-secret', 'x-api-version'];
         $gatewayStack = HandlerStack::create();
         $gatewayStack->push(AttachUserMiddleware::handle());
         $gatewayStack->push(

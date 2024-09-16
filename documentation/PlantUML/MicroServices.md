@@ -6,10 +6,27 @@ This project is a microservices-based application designed for user management, 
 
 - **Docker**: To run the microservices in isolated containers.
 - **Docker Compose**: To manage multi-container Docker applications.
+- **Kubernetes**: To manage microservices, networking, communication... into node / nodes
 - **Git**: To clone the repositories.
 - **Postman**: For API testing and documentation.
 
 ## Setup Instructions
+
+### NOTE 
+**If your branch is dockerhub-example or kubernetes-example or kubernetes-nodes-example you may follow the instructions provided at those branches and bypass the instructions given below.**
+[dockerhub-example](https://github.com/miloskec/gateway/blob/dockerhub-example/README.md) 
+[kubernetes-example](https://github.com/miloskec/gateway/blob/kubernetes-example/README.md) 
+[kubernetes-nodes-example](https://github.com/miloskec/gateway/blob/kubernetes-nodes-example/README.md) 
+
+
+Before executing this script, ensure that the user is added to the Docker group
+
+```sh
+groups $USER
+#if there is no **docker** then run:
+sudo usermod -aG docker $USER
+```
+
 
 ### 1. Prepare the development environment and install dependencies
 Each microservice requires a local development environment capable of running PHP 8.3 and its dependencies. It's recommended to add the ppa:ondrej/xxxx repository to your system to ensure you have the latest PHP version and extensions like Memcache available. Install PHP, Apache2, MySQL 8, and other necessary components.
@@ -25,17 +42,10 @@ Ensure you copy .env.example to .env in each service and configure the necessary
 Navigate to each service directory and execute composer install. To avoid issues with missing PHP extensions that are not critical for local development, such as ext-rdkafka, you can bypass the platform requirements:
 
 ```sh
-composer install --ignore-platform-req=ext-rdkafka
+git checkout basic
 ```
 
 ### NOTE
-Before executing this script, ensure that the user is added to the Docker group
-
-```sh
-groups $USER
-#if there is no **docker** then run:
-sudo usermod -aG docker $USER
-```
 
 **If all your project branches are NOT set to 'basic', you may follow the instructions provided at those branches and bypass the instructions given below.**
 [link](https://github.com/miloskec/gateway/blob/production-prepare/README.md) 
