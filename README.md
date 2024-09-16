@@ -41,7 +41,7 @@ groups $USER
 sudo usermod -aG docker $USER
 ```
 
-**If all your project branches are NOT set to 'basic', you may follow the instructions provided at those branches and bypass the instructions given below.**
+**If all your project branches are NOT set to 'basic' (or master/main if basic does not exist), you may follow the instructions provided at those branches and bypass the instructions given below.**
 [link](https://github.com/miloskec/gateway/blob/production-prepare/README.md) 
 
 ### 2. Clone the repositories
