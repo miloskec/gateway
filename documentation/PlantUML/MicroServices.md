@@ -18,6 +18,7 @@ This project is a microservices-based application designed for user management, 
 [kubernetes-example](https://github.com/miloskec/gateway/blob/kubernetes-example/README.md) 
 [kubernetes-nodes-example](https://github.com/miloskec/gateway/blob/kubernetes-nodes-example/README.md) 
 
+
 Before executing this script, ensure that the user is added to the Docker group
 
 ```sh
@@ -41,7 +42,7 @@ Ensure you copy .env.example to .env in each service and configure the necessary
 Navigate to each service directory and execute composer install. To avoid issues with missing PHP extensions that are not critical for local development, such as ext-rdkafka, you can bypass the platform requirements:
 
 ```sh
-composer install --ignore-platform-req=ext-rdkafka
+git checkout basic
 ```
 
 ### NOTE
