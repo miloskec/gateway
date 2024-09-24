@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Http\Requests\PasswordRecoveryRequest;
 use App\Http\Requests\PasswordResetRequest;
+use App\Http\Requests\PasswordResetWithTokenRequest;
 use App\Http\Requests\UserLoginRequest;
 use App\Http\Requests\UserRegisterRequest;
 use App\Http\Requests\VerifyTokenRequest;
 use App\Services\AuthService;
+use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
@@ -29,14 +30,19 @@ class AuthController extends Controller
         return $this->authService->login($request->validated());
     }
 
+    public function logout(Request $request)
+    {
+        return $this->authService->logout($request->bearerToken());
+    }
+
     public function verify(VerifyTokenRequest $request)
     {
         return $this->authService->verify($request->bearerToken());
     }
 
-    public function verifyJWT(VerifyTokenRequest $request)
+    public function verifyJWT(Request $request)
     {
-        return $this->authService->verifyJWT($request->bearerToken());
+        return $this->authService->verifyJWT();
     }
 
     public function passwordRecovery(PasswordRecoveryRequest $request)
@@ -44,12 +50,17 @@ class AuthController extends Controller
         return $this->authService->passwordRecovery($request->email);
     }
 
-    public function resetPassword(PasswordResetRequest $request)
+    public function resetPasswordWithToken(PasswordResetWithTokenRequest $request)
     {
-        return $this->authService->resetPassword($request->bearerToken(), $request->password);
+        return $this->authService->resetPasswordWithToken($request->email, $request->reset_token, $request->password);
     }
 
-    public function refresh(VerifyTokenRequest $request)
+    public function resetPassword(PasswordResetRequest $request)
+    {
+        return $this->authService->resetPassword($request->password, $request->current_password);
+    }
+
+    public function refresh(Request $request)
     {
         return $this->authService->refreshJWT($request->bearerToken());
     }

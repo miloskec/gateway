@@ -1,0 +1,158 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gateway-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gateway
+  template:
+    metadata:
+      labels:
+        app: gateway
+    spec:
+      containers:
+      - name: gateway
+        image: miloskec/gateway:latest
+        imagePullPolicy: Always
+        env:
+        - name: AUTH_SERVICE_URL
+          value: "http://authentication-service.default/api"
+        - name: PROFILE_SERVICE_URL
+          value: "http://profile-service/api"
+        - name: AUTHZ_SERVICE_URL
+          value: "http://authorization-service/api"
+        - name: DB_HOST
+          value: "mysql-service"
+        - name: DB_PORT
+          value: "3306"
+        - name: DB_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: MYSQL_DATABASE
+        - name: DB_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: MYSQL_USER
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-secret
+              key: MYSQL_PASSWORD
+        - name: MEMCACHED_HOST
+          value: "memcached-service"
+        - name: MEMCACHED_PORT
+          value: "11211"
+        - name: JWT_TTL
+          value: "600"
+        ports:
+        - containerPort: 80
+        readinessProbe:
+          exec:
+            command:
+            - /bin/sh
+            - -c
+            - "curl -f http://localhost:80/api/health || exit 1"
+          initialDelaySeconds: 10
+          periodSeconds: 30
+          timeoutSeconds: 10
+          successThreshold: 1
+          failureThreshold: 3
+        lifecycle:
+          postStart:
+            exec:
+              command: ["php", "artisan", "config:clear"]
+        volumeMounts:
+        - name: app-storage-logs
+          mountPath: /var/www/html/storage/logs
+        - name: app-logs
+          mountPath: /var/www/html/logs
+      volumes:
+      - name: app-storage-logs
+        persistentVolumeClaim:
+          claimName: app-pslc
+      - name: app-logs
+        persistentVolumeClaim:
+          claimName: app-plc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gateway-service
+spec:
+  #type: LoadBalancer
+  selector:
+    app: gateway
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: app-storage-logs
+  labels:
+    type: app-storage-logs
+spec:
+  capacity:
+    storage: 5Gi
+  accessModes:
+  - ReadWriteOnce
+  volumeMode: Filesystem
+  persistentVolumeReclaimPolicy: Delete # Change to Retain
+  storageClassName: standard
+  hostPath:
+    path: /mnt/slogs
+    type: DirectoryOrCreate
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: app-pslc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: standard
+  selector:
+    matchLabels:
+      type: app-storage-logs
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: app-logs
+  labels:
+    type: app-logs
+spec:
+  capacity:
+    storage: 5Gi
+  accessModes:
+  - ReadWriteOnce
+  volumeMode: Filesystem
+  persistentVolumeReclaimPolicy: Delete # Change to Retain
+  storageClassName: standard
+  hostPath:
+    path: /mnt/logs
+    type: DirectoryOrCreate
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: app-plc
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+  storageClassName: standard
+  selector:
+    matchLabels:
+      type: app-logs

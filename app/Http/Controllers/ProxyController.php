@@ -10,13 +10,17 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class ProxyController extends Controller
 {
     protected $profileServiceUrl;
+    protected $authorizationServiceUrl;
+    protected $authenticationServiceUrl;
 
     public function __construct(private readonly Client $client)
     {
         $this->profileServiceUrl = config('services.micro-services.profile'); // URL of the User Profile Service
+        $this->authorizationServiceUrl = config('services.micro-services.authorization'); // URL of the User Authorization Service
+        $this->authenticationServiceUrl = config('services.micro-services.authentication'); // URL of the User Authentication Service
     }
 
-    protected function prepareRequest(Request $request, $path = null, $url): ResponseInterface
+    protected function prepareRequest(Request $request, $url, $path = null): ResponseInterface
     {
         $user = $request->user();
         // Prepare the data to be sent to the external API
@@ -30,7 +34,7 @@ class ProxyController extends Controller
                 'updated_at' => $user->updated_at,
             ],
         ];
-        
+
         $originalData = $request->json()->all();
         $data = array_merge($originalData, $data);
 
@@ -40,22 +44,25 @@ class ProxyController extends Controller
             'json' => $data,
         ]);
     }
+
     public function handleProfile(Request $request, $path = null)
     {
         $url = $this->profileServiceUrl . '/profile/' . $path;
-        return $this->prepareRequest($request, $path, $url);
+
+        return $this->prepareRequest($request, $url, $path);
     }
 
     public function handleAdminProfile(Request $request)
     {
         $url = $this->profileServiceUrl . '/profile/admin';
-        return $this->prepareRequest($request, null, $url);
+
+        return $this->prepareRequest($request, $url);
     }
 
     public function handleDynamic(Request $request, $service, $path = null)
     {
-        $url = $this->getServiceUrl($service) . '/' . $service . '/' . $path;
-        return $this->prepareRequest($request, $path, $url);
+        $url = $this->getServiceUrl($service) . '/' . $path;
+        return $this->prepareRequest($request, $url, $path);
     }
 
     private function getServiceUrl($service)
@@ -63,6 +70,8 @@ class ProxyController extends Controller
         // Define your service URLs here
         $services = [
             'profile' => $this->profileServiceUrl,
+            'authorization' => $this->authorizationServiceUrl,
+            'authentication' => $this->authenticationServiceUrl,
             // Add more services as needed
         ];
 

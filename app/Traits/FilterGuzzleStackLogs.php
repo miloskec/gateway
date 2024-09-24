@@ -14,6 +14,7 @@ trait FilterGuzzleStackLogs
                 }
             });
         }
+
         return json_encode($dataArray);
     }
 
@@ -27,6 +28,7 @@ trait FilterGuzzleStackLogs
                 $filteredHeaders[$key] = $value;
             }
         }
+
         return $filteredHeaders;
     }
 }
