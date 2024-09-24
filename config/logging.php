@@ -1,5 +1,6 @@
 <?php
 
+use Monolog\Formatter\JsonFormatter;
 use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\SyslogUdpHandler;
@@ -89,7 +90,7 @@ return [
             'handler_with' => [
                 'host' => env('PAPERTRAIL_URL'),
                 'port' => env('PAPERTRAIL_PORT'),
-                'connectionString' => 'tls://'.env('PAPERTRAIL_URL').':'.env('PAPERTRAIL_PORT'),
+                'connectionString' => 'tls://' . env('PAPERTRAIL_URL') . ':' . env('PAPERTRAIL_PORT'),
             ],
             'processors' => [PsrLogMessageProcessor::class],
         ],
@@ -98,7 +99,7 @@ return [
             'driver' => 'monolog',
             'level' => env('LOG_LEVEL', 'debug'),
             'handler' => StreamHandler::class,
-            'formatter' => env('LOG_STDERR_FORMATTER'),
+            'formatter' => JsonFormatter::class,
             'with' => [
                 'stream' => 'php://stderr',
             ],
@@ -118,6 +119,11 @@ return [
             'replace_placeholders' => true,
         ],
 
+        'test' => [
+            'driver' => 'stack',
+            'channels' => ['null'],
+        ],
+
         'null' => [
             'driver' => 'monolog',
             'handler' => NullHandler::class,
@@ -127,12 +133,18 @@ return [
             'path' => storage_path('logs/laravel.log'),
         ],
 
-        'gateway' => [
+        'gate' => [
             'driver' => 'daily',
             'path' => base_path('logs/laravel-json-gateway.json'),
             'level' => 'debug',
             'days' => 90,
             'formatter' => Monolog\Formatter\JsonFormatter::class,
+        ],
+
+        'gateway' => [
+            'driver' => 'stack',
+            'channels' => ['gate', 'stderr'],
+            'ignore_exceptions' => false,
         ],
 
     ],
