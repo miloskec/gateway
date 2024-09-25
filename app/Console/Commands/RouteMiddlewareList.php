@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Route;
 class RouteMiddlewareList extends Command
 {
     protected $signature = 'route:middleware-list';
+
     protected $description = 'List all routes with their middleware';
 
     public function handle()
@@ -18,10 +19,10 @@ class RouteMiddlewareList extends Command
             ['Method', 'URI', 'Name', 'Action', 'Middleware'],
             collect($routes)->map(function ($route) {
                 return [
-                    'Method'     => implode('|', $route->methods),
-                    'URI'        => $route->uri,
-                    'Name'       => $route->getName(),
-                    'Action'     => $route->getActionName(),
+                    'Method' => implode('|', $route->methods),
+                    'URI' => $route->uri,
+                    'Name' => $route->getName(),
+                    'Action' => $route->getActionName(),
                     'Middleware' => implode(', ', $route->middleware()),
                 ];
             })->toArray()

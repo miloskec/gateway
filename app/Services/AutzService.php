@@ -16,14 +16,14 @@ class AutzService
     public function checkPermissions(array $data)
     {
         return $this->client->post("{$this->autzServiceUrl}/check-permissions", [
-            'json' => $data
+            'json' => $data,
         ]);
     }
 
     public function getRoles(array $data)
     {
         return $this->client->post("{$this->autzServiceUrl}/get-roles", [
-            'json' => $data
+            'json' => $data,
         ]);
     }
 }
